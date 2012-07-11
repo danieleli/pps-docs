@@ -16,6 +16,22 @@
     "destPath": "public/index.html"
   },
 
+  "js.html": {
+    "type": "jade",
+    "sourceRoot": "./jade/",
+    "sourcePaths": ["js.jade"],
+    "destRoot": "",
+    "destPath": "public/js.html"
+  },
+
+  "node.html": {
+    "type": "jade",
+    "sourceRoot": "./jade/",
+    "sourcePaths": ["node.jade"],
+    "destRoot": "",
+    "destPath": "public/node.html"
+  },
+
   "js.js": {
     "type": "javascript",
     "sourceRoot": ".",
