@@ -1,0 +1,24 @@
+!!!5
+html
+  head
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    title 
+      block title
+        | PPS API
+    meta(name='viewport', content='width=device-width')
+    != mason('style.css')
+  body
+    header#header
+      nav#navigation.main-menu(role='navigation')
+        ul.unstyled
+          li
+            a(href='#') Node Module
+          li
+            a(href='#') PPS.js
+
+    section#main(role='application')
+      block content
+
+    //- All Javascript
+    != mason('js.js')
+    block scripts

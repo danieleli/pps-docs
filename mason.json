@@ -1,0 +1,24 @@
+{
+
+  "style.css": {
+    "type": "stylus",
+    "sourcePaths": ["styl/style.styl"],
+    "destRoot": "./",
+    "destPath": "styl/compiled/style.css"
+  },
+
+  "index.html": {
+    "type": "jade",
+    "sourcePaths": ["index.jade"],
+    "destRoot": "",
+    "destPath": "public/index.html"
+  },
+
+  "js.js": {
+    "type": "javascript",
+    "sourceRoot": "./",
+    "sourcePaths": [],
+    "destRoot": "./",
+    "destPath": "js/compiled/all.js"
+  }
+}

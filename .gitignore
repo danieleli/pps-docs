@@ -1,0 +1,6 @@
+public/*.html
+public/styl/*
+public/js/*
+node_modules/
+styl/compiled/*.css
+js/compiled/*.js
