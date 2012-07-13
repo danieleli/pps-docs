@@ -1,0 +1,56 @@
+extends layout
+
+block content
+  nav.nav#sidebar
+    ul
+      li
+        a(href="#customers") Customers
+        ul
+          li: a(href="#customer_find") Find
+          li: a(href="#customer_create") Create
+          li: a(href="#customer_get") Get
+          li: a(href="#customer_update") Update
+      li
+        a(href="#transactions") Transactions
+        ul
+          li: a(href="#transaction_find") Find
+          li: a(href="#transaction_create") Create
+          li: a(href="#transaction_get") Get
+          li: a(href="#customer_settle") Settle
+  
+  article#customers
+    h1 Customers
+    p Customers will handle customers' saved info in the API. Customers will be able to have saved payment types, coupons, plans, and subscriptions. Payment types can be sent at creation or through updates.
+    
+    article#customer_find
+      h2 Find
+      .url
+        .method.get GET
+        | &nbsp;/customer
+      p Get a list of customers, with optional filter parameters.
+    
+    article#customer_create
+      h2 Create
+      .url
+        .method.post POST
+        | &nbsp;/customer
+      p Create a new PPS customer object. Takes any of the parameters listed above except for the payments array, which are created through a separate API call (below).
+      h3 Example Request Body
+      pre.js.
+        {
+          firstName: "David",
+          lastName: "Becher",
+          id: "abc123", // custom ID specific to our application
+          email: "david@skookum.com",
+          billingAddress: {
+            street: '121 W Trade St',
+            city: 'Charlotte',
+            state: 'NC',
+            postalCode: '28202',
+            country: 'United States of America'
+          }
+        }
+
+block scripts
+  script
+    $('body').scrollspy()
