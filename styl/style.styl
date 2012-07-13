@@ -1,3 +1,66 @@
-body
-  background #000
+@import url(http://fonts.googleapis.com/css?family=Lato:400,900);
+
+@import 'nib'
+global-reset()
+reset-html5()
+
+html
+  background #282224
   color #fff
+  font 1em/1.3125em Helvetica, Arial, sans-serif
+
+body
+  background #282224
+  width 80%
+  color #d0d0d0
+  margin 0 auto
+
+a:link, a:active, a:visited
+  color #ffeb01
+  text-decoration none
+a:hover
+  text-decoration underline
+
+h1, h2, h3, h4, h5, h6
+  font-family 'Lato', sans-serif
+  font-weight 400
+  color #d2d2d2
+
+h1, .h1
+  font-weight 900
+  font-size 4.25em
+  color #fff
+  margin 1em 0
+  &:first-of-type
+    margin-top 0
+h2, .h2
+  font-size 2.625em
+  margin 1em 0
+h3, .h3
+  font-size 1.625em
+  color #afb092
+  margin 1.385em 0
+
+#header
+  padding 2em 0
+  h1
+    display inline-block
+    margin 0
+    width 300px
+    height 74px
+    text-indent 100%
+    white-space nowrap
+    overflow hidden
+    background url(/images/logo.png) left top no-repeat
+  #navigation
+    display inline-block
+    vertical-align bottom
+    margin 0 0 0 2em
+    ul
+      display inline-block
+      li
+        display inline-block
+        margin 0 1em
+
+#main
+  padding 2.5em 0

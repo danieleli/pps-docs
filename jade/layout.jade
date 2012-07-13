@@ -9,14 +9,17 @@ html
     != mason('style.css')
   body
     header#header
+      h1.logo Priority Payment Systems
       nav#navigation.main-menu(role='navigation')
-        ul.unstyled
+        ul
           li
-            a(href='/') Home
+            a(href='/intro.html') Introduction
           li
-            a(href='/node.html') Node Module
+            a(href='/objects.html') API Objects
           li
-            a(href='/js.html') PPS.js
+            a(href='/js.html') Integrations
+          li
+            a(href='/faq.html') FAQ
 
     section#main(role='application')
       block content
