@@ -22,6 +22,21 @@ block content
           li: a(href="#transaction_settle") Settle
           li: a(href="#transaction_void") Void
           li: a(href="#transaction_refund") Refund
+      li
+        a(href="#plan") Plans
+        ul
+          li: a(href="#plan_find") Find
+          li: a(href="#plan_get") Get
+          li: a(href="#plan_create") Create
+          li: a(href="#plan_update") Update
+          li: a(href="#plan_remove") Remove
+      li
+        a(href="#subscription") Subscriptions
+        ul
+          li: a(href="#subscription_get") Get
+          li: a(href="#subscription_create") Create
+          li: a(href="#subscription_update") Update
+          li: a(href="#subscription_remove") Remove
   
   article#customers
     h1 Customers
@@ -269,6 +284,115 @@ block content
       h2 Refund
       pre: code.method POST /transaction/:id/refund
       p Refunds part or all of a settled transaction. Takes 1 parameter, amount, which must be less than or equal to the amount that was originally charged.
+  
+  article#plan
+    h1 Plans
+    p Plans are preset transactions that will generally be used for recurring billing. The customer's account object can be tied to a recurring plan that will be billed at set increments.
+    
+    h2 Routes Overview
+    pre: code.method.
+      GET /plan                         // get all plans
+      POST /plan                        // create new plan
+      GET /plan/:id                     // get plan by id
+      PUT /plan/:id                     // update plan by id
+      DELETE /plan/:id                  // delete plan by id
+      GET /plan/:id/accounts            // get accounts for plan
+    
+    h2 Properties
+    p List of available properties for a plan.
+    pre: code.
+      - (String) name
+      - (String) code
+      - (String) description
+      - (Number) cost
+      - (Object) intialFees
+        - (Number) setup
+      - (Object) interval     *length of time for each recurring invoice (1 month, etc)*
+        - (String) unit
+        - (Number) quantity
+      - (Object) trial
+        - (String) unit
+        - (Number) quantity
+        
+    article#plan_find
+      h2 Find
+      pre: code.method.
+        GET /plan
+        GET /plan?name=Expert
+      p Get a list of plans, with optional filter parameters.
+    
+    article#plan_get
+      h2 Get
+      pre: code.method GET /plan/:id
+      p Find a specific plan using its id
+    
+    article#plan_create
+      h2 Create
+      pre: code.method POST /plan
+      p Create a new plan
+    
+    article#plan_update
+      h2 Update
+      pre: code.method PUT /plan/:id
+      p Update a plan by ID.
+    
+    article#plan_remove
+      h2 Remove
+      pre: code.method DELETE /plan/:id
+      p Remove a plan. This disallows any further customers from signing up for the plan, but does not remove it from any current subscriptions.
+  
+  article#subscription
+    h1 Subscriptions
+    p Subscription are objects that tie accounts and plans together. They denote a recurring billing cycle a customer has with a particular plan.
+    
+    h2 Routes Overview
+    pre: code.method.
+      GET /subscription                      // get all subscriptions
+      POST /subscription                     // create new subscription
+      GET /subscription/:id                  // get subscription by id
+      PUT /subscription/:id                  // update subscription by id
+      DELETE /subscription/:id               // cancel subscription by id
+    
+    h2 Properties
+    p List of available properties for a subscription.
+    pre: code.
+      - (guid) customer                    *the ID of the customer in the PPS database*
+      - (String) plan
+      - (Date) activated
+      - (Date) renews
+      - (Date) expires
+      - (Boolean) active
+      - (Number) quantity
+      - (Object) currentPeriod
+        - (Date) started
+        - (Date) ends
+      - (Object) trialPeriod
+        - (Date) started
+        - (Date) ends
+    
+    article#subscription_get
+      h2 Get
+      pre: code.method GET /subscription/:id
+      p Find a specific subscription using its id
+    
+    article#subscription_create
+      h2 Create
+      pre: code.method POST /subscription
+      p Create a new subscription.
+    
+    article#subscription_update
+      h2 Update
+      pre: code.method PUT /subscription/:id
+      p Update an existing subscription. The following parameters can be updated:
+      ul
+        li plan
+        li active
+        li quantity
+    
+    article#subscription_remove
+      h2 Remove
+      pre: code.method DELETE /subscription/:id
+      p Remove a subscription.
 
 block scripts
   script

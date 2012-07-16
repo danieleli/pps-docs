@@ -56,10 +56,11 @@ pre, .url
   padding 0.5em
   margin 1em 0
 
-pre
+article pre
   overflow-x auto
   ol.line-numbers
     counter-reset li
+    margin 0
     li
       position relative
       list-style-type none
@@ -175,14 +176,14 @@ pre
             &.active > a:after
               opacity 1
               left -16px
-  article
-    p, ul, ol
-      margin-bottom 1em
-    ul, ol
-      margin-left 20px
-      li
-        margin-bottom 0.25em
-    ul li
-      list-style-type disc
-    ol li
-      list-style-type decimal
+article
+  p, ul, ol
+    margin-bottom 1em
+  ul, ol
+    margin-left 20px
+    li
+      margin-bottom 0.25em
+  ul li
+    list-style-type disc
+  ol li
+    list-style-type decimal
