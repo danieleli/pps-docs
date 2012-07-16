@@ -7,44 +7,130 @@ block content
         a(href="#customers") Customers
         ul
           li: a(href="#customer_find") Find
-          li: a(href="#customer_create") Create
           li: a(href="#customer_get") Get
+          li: a(href="#customer_create") Create
           li: a(href="#customer_update") Update
+          li: a(href="#customer_card") Add Card
+          li: a(href="#customer_close") Close
+          li: a(href="#customer_remove") Remove
       li
         a(href="#transactions") Transactions
         ul
           li: a(href="#transaction_find") Find
           li: a(href="#transaction_create") Create
           li: a(href="#transaction_get") Get
-          li: a(href="#customer_settle") Settle
+          li: a(href="#transaction_settle") Settle
   
   article#customers
     h1 Customers
     p Customers will handle customers' saved info in the API. Customers will be able to have saved payment types, coupons, plans, and subscriptions. Payment types can be sent at creation or through updates.
+    
+    h2 Routes Overview
+    pre: code.method.
+      GET /customer                       // get all customers with optional filters
+      POST /customer                      // create new customer
+      GET /customer/:id                   // get customer by id
+      PUT /customer/:id                   // update customer by id
+      PUT /customer/:id/close             // close customer account by id
+      DELETE /customer/:id                // delete customer by id
+      POST /customer/:id/card             // create a new card
+      DELETE /customer/:id/card/:cardId   // delete customer's card by id
+      GET /customer/:id/transactions      // get transactions for customer
+      GET /customer/:id/subscriptions     // get subscriptions for customer
+    
+    h2 Properties
+    p Complete list of available properties when retrieving a customer:
+    pre: code.
+      - (guid) id:                    *the ID of the customer in the PPS database*
+      - (String) customId:            *an identifier for the customer in the merchant's system (optional, set when creating the customer)*
+      - (String) firstName
+      - (String) lastName
+      - (String) note
+      - (Integer) transactionCount:   *just a count of all transactions for this customer, details can be found by calling `GET /customers/:id/transactions`*
+      - (Object) billingAddress:      *optionally, instead of having a billing and shipping address, we could just have an array of addresses for a customer*
+        - (String) street
+        - (String) streetExtended
+        - (String) city
+        - (String) state:             *maybe "city/state" could be changed to "locality/region" for non-US customers*
+        - (String) postalCode
+        - (String) country
+      - (Object) shippingAddress
+        - (String) street
+        - (String) streetExtended
+        - (String) city   
+        - (String) state:             *maybe "city/state" could be changed to "locality/region" for non-US customers*
+        - (String) postalCode
+        - (String) country
+      - (String) email:               *this could potentially be an array of emails as well*
+      - (String) phoneNumber:         *this could potentially be an array of phone numbers as well*
+      - (Array) payments:             *array of cards on file for this customer. this design does not currently consider storing anything other than credit cards for a customer.*
+        - (String) id
+        - (String) name
+        - (String) token:             *unique token for each card/customer combination*
+        - (String) hash:              *hash of the card number; used, for example, to distinguish if the same card is used by 2 customers without actually knowing the card number*
+        - (String) last4:             *last 4 digits of card number*
+        - (String) bin:               *first 6 digits of card number*
+        - (String) expiration_month
+        - (String) expiration_year
+        - (Boolean) default:          *whether this is the default card to use for new transactions*
+        - (Object) address:           *optional, the address associated with this card. by default it will use the billing address for the customer*
     
     article#customer_find
       h2 Find
       pre: code.method GET /customer
       p Get a list of customers, with optional filter parameters.
     
+    article#customer_get
+      h2 Get
+    
     article#customer_create
       h2 Create
       pre: code.method POST /customer
       p Create a new PPS customer object. Takes any of the parameters listed above except for the payments array, which are created through a separate API call (below).
       h3 Example Request Body
-      pre: code.method.
-        GET /customer                       // get all customers with optional filters
-        POST /customer                      // create new customer
-        GET /customer/:id                   // get customer by id
-        PUT /customer/:id                   // update customer by id
-        PUT /customer/:id/close             // close customer account by id
-        DELETE /customer/:id                // delete customer by id
-        POST /customer/:id/card             // create a new card
-        DELETE /customer/:id/card/:cardId   // delete customer's card by id
-        GET /customer/:id/transactions      // get transactions for customer
-        GET /customer/:id/subscriptions     // get subscriptions for customer
       pre: code.js.
-        new PPS.Customer({
+        {
+          firstName: "David",
+          lastName: "Becher",
+          id: "abc123", // custom ID specific to our application
+          email: "david@skookum.com",
+          billingAddress: {
+            street: '121 W Trade St',
+            city: 'Charlotte',
+            state: 'NC',
+            postalCode: 28202,
+            country: 'United States of America'
+          }
+        }
+    
+    article#customer_update
+      h2 Update
+      pre: code.method PUT /customer/:id
+      p Update a PPS customer object. Parameters in the body are the same as the create method. Any parameters that are not sent are not updated.
+    
+    article#customer_card
+      h2 Add Card
+      pre: code.method POST /customer/:id/card
+      p Create a new card for a customer. Note that this method takes several parameters that are not ever returned by the API again (by design). Calling this method would add an item to the payments array for a customer.
+      h3 Example request body
+      pre: code.js.
+        {
+          number: '378282246310005',
+          cvv: '123',
+          expiration_month: '06',
+          expiration_year: '2016',
+          address: { // this field is optional, and will default to the customer's billing address
+            street: '121 W Trade St',
+            city: 'Charlotte',
+            state: 'NC',
+            postalCode: '28202',
+            country: 'United States of America'
+          },
+          default: true // optional, if true it will make this card the default and set all other cards to default: false.
+        }
+      h3 Example Response
+      pre: code.js.
+        {
           id: 'abc123',
           token: 'kjshfgsjlkfh',
           hash: 'sdlkjfhsdkj',
@@ -59,7 +145,17 @@ block content
             postalCode: '28202',
             country: 'United States of America'
           }
-        })
+        }
+    
+    article#customer_close
+      h2 Close
+      pre: code.method PUT /customer/:id/close
+      p This will close an account but not remove it.
+    
+    article#customer_remove
+      h2 Remove
+      pre: code.method DELETE /customer/:id
+      p Remove account completely from PPS (including payment information).
 
 block scripts
   script
