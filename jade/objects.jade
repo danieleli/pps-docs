@@ -17,9 +17,11 @@ block content
         a(href="#transactions") Transactions
         ul
           li: a(href="#transaction_find") Find
-          li: a(href="#transaction_create") Create
           li: a(href="#transaction_get") Get
+          li: a(href="#transaction_create") Create
           li: a(href="#transaction_settle") Settle
+          li: a(href="#transaction_void") Void
+          li: a(href="#transaction_refund") Refund
   
   article#customers
     h1 Customers
@@ -156,6 +158,117 @@ block content
       h2 Remove
       pre: code.method DELETE /customer/:id
       p Remove account completely from PPS (including payment information).
+  
+  article#transactions
+    h1 Transactions
+    p Transactions are individual payment events by an account. Transactions can be standalone, part of an invoice, or tied to a recurring billing subscription.
+    
+    h2 Routes Overview
+    pre: code.method.
+      GET /transaction                  // get all transactions
+      POST /transaction                 // create new transaction
+      GET /transaction/:id              // get transaction by id
+      DELETE /transaction/:id           // void a transaction
+      POST /transaction/:id/refund      // refund a transaction
+      POST /transaction/:id/settle      // settle a transaction
+    
+    h2 Properties
+    p Complete list of available properties when getting a transaction:
+    pre: code.
+      - (Number) amount
+      - (String) status: *A string representing the status of the transaction. Possible values might include: settled, declined, pending, etc.*
+      - (guid) customerId
+      - (Object) payment
+        - (String) token: *unique token for each card/customer combination*
+        - (String) hash: *hash of the card number; used, for example, to distinguish if the same card is used by 2 customers without actually knowing the card number*
+        - (String) last4: *last 4 digits of card number*
+        - (String) bin: *first 6 digits of card number*
+        - (String) expiration_month
+        - (String) expiration_year
+      - (Object) customer
+        - (String) firstName
+        - (String) lastName
+        - (Object) billingAddress
+          - (String) street
+          - (String) streetExtended
+          - (String) city
+          - (String) state
+          - (String) postalCode
+          - (String) country
+        - (Object) shippingAddress
+          - (String) street
+          - (String) streetExtended
+          - (String) city
+          - (String) state
+          - (String) postalCode
+    
+    article#transaction_find
+      h2 Find
+      pre: code.method.
+        GET /transaction
+        GET /transaction?name=David
+      p Get a list of transactions, with optional filter parameters.
+    
+    article#transaction_get
+      h2 Get
+      pre: code.method GET /transaction/:id
+      p Find a transaction using its id.
+    
+    article#transaction_create
+      h2 Create
+      pre: code.method POST /transaction
+      p Create a new transaction (i.e. charge someone money). The minimum required values for this API call are amount and payment. This API call is designed to take many possible combinations of inputs. Some examples:
+      ul
+        li Just an amount and a payment
+        li An amount, a payment, and customer information
+        li An amount and an existing customer ID with stored payment information
+        li An amount, an existing customer ID, and a payment
+      p There are several possible options here for when the transaction is settled:
+      ol
+        li Transaction is settled immediately (or automatically, at the end of the day, or whatever works best for PPS). I think this should be the default.
+        li Transaction is authorized, but not yet settled. The status of the transaction would switch to a "pending settlement" or something similar. There would then be a separate API call to submit the transaction for settlement.
+      h3 Parameters
+      pre: code.
+        - (Number) amount:              *Required: the total amount to charge*
+        - (Boolean) settle:             *Optional: should this transaction automatically be settled? Defaults to true*
+        - (guid) customerId:            *Optional, unless the <code>payment</code> and/or <code>customer</code> parameters are omitted, in which case this must be a valid customer ID with card information on file*
+        - (Object *or* Temporary Card Token) payment: *Required, unless <code>customerId</code> is specified, in which case this parameter is optional. If sending both a <code>customerId</code> with valid payment information **and** this payment parameter, this payment information will be used in place of the default card on file for the customer*
+          - (String) number
+          - (String) cvv
+          - (String) name
+          - (String) expiration_month
+          - (String) expiration_year
+        - (Object) customer:            *Optional. Do not pass this parameter if passing <code>customerId</code>. This is for passing customer information for a customer that does not exist in the PPS database.*
+          - (String) firstName
+          - (String) lastName
+          - (Object) billingAddress
+            - (String) street
+            - (String) streetExtended
+            - (String) city
+            - (String) state
+            - (String) postalCode
+            - (String) country
+          - (Object) shippingAddress
+            - (String) street
+            - (String) streetExtended
+            - (String) city
+            - (String) state
+            - (String) postalCode
+            - (String) country
+    article#transaction_settle
+      h2 Submit for settlement
+      pre: code.method POST /transaction/:id/settle
+      p This method would settles an existing authorized transaction. It takes 1 parameter, amount, which must be less than or equal to the amount that was originally authorized.
+    
+    article#transaction_void
+      h2 Void
+      pre: code.method DELETE /transaction/:id
+      p Voids a previously authorized transaction. A transaction cannot be voided if it has already been settled.
+    
+    article#transaction_refund
+      h2 Refund
+      pre: code.method POST /transaction/:id/refund
+      p Refunds part or all of a settled transaction. Takes 1 parameter, amount, which must be less than or equal to the amount that was originally charged.
 
 block scripts
   script

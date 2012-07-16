@@ -93,7 +93,7 @@ pre
     .string span { color: #5a8dfa }
     .keyword { color: #d61103 }
     .number { color: #009282 }
-    .placeholder { color: #417baa }
+    .placeholder { color: #888 }
     .method
       &.GET
         color #009282
@@ -175,3 +175,14 @@ pre
             &.active > a:after
               opacity 1
               left -16px
+  article
+    p, ul, ol
+      margin-bottom 1em
+    ul, ol
+      margin-left 20px
+      li
+        margin-bottom 0.25em
+    ul li
+      list-style-type disc
+    ol li
+      list-style-type decimal
