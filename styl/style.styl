@@ -8,6 +8,7 @@ reset-html5()
 yellow = #ffeb01
 bgcolor = #282224
 textcolor = #d0d0d0
+code-font = Consolas, "Liberation Mono", Courier, monospace
 
 * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
 
@@ -47,6 +48,65 @@ h3, .h3
   font-size 1.625em
   color #afb092
   margin 1.385em 0
+
+pre, .url
+  font-family code-font
+  background #2c2c2c
+  border-radius 0.5em
+  padding 0.5em
+  margin 1em 0
+
+pre
+  overflow-x auto
+  ol.line-numbers
+    counter-reset li
+    li
+      position relative
+      list-style-type none
+      margin 0 0 0 2em
+      &:before
+        content counter(li)
+        counter-increment li
+        position absolute
+        top 0
+        left -2.5em
+        width 2em
+        background rgba(0, 0, 0, 0.3)
+        -moz-box-sizing border-box
+        -webkit-box-sizing border-box
+        box-sizing border-box
+        padding 0 0.25em
+        text-align right
+        user-select none
+      &:first-child:before
+        border-top-left-radius 0.25em
+        border-top-right-radius 0.25em
+      &:last-child:before
+        border-bottom-left-radius 0.25em
+        border-bottom-right-radius 0.25em
+  .method ol.line-numbers li:before
+    display none
+  code
+    .comment { color: #666 }
+    .init { color: yellow }
+    .string { color: #5a8dfa }
+    .string span { color: #5a8dfa }
+    .keyword { color: #d61103 }
+    .number { color: #009282 }
+    .method
+      &.GET
+        color #009282
+      &.POST
+        color #5a8dfa
+      &.PUT
+        color yellow
+      &.DELETE
+        color #d61103
+
+.url
+  .method
+    display inline-block
+    padding 0.25em
 
 #header
   padding 2em 0

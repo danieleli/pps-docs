@@ -24,32 +24,42 @@ block content
     
     article#customer_find
       h2 Find
-      .url
-        .method.get GET
-        | &nbsp;/customer
+      pre: code.method GET /customer
       p Get a list of customers, with optional filter parameters.
     
     article#customer_create
       h2 Create
-      .url
-        .method.post POST
-        | &nbsp;/customer
+      pre: code.method POST /customer
       p Create a new PPS customer object. Takes any of the parameters listed above except for the payments array, which are created through a separate API call (below).
       h3 Example Request Body
-      pre.js.
-        {
-          firstName: "David",
-          lastName: "Becher",
-          id: "abc123", // custom ID specific to our application
-          email: "david@skookum.com",
-          billingAddress: {
+      pre: code.method.
+        GET /customer                       // get all customers with optional filters
+        POST /customer                      // create new customer
+        GET /customer/:id                   // get customer by id
+        PUT /customer/:id                   // update customer by id
+        PUT /customer/:id/close             // close customer account by id
+        DELETE /customer/:id                // delete customer by id
+        POST /customer/:id/card             // create a new card
+        DELETE /customer/:id/card/:cardId   // delete customer's card by id
+        GET /customer/:id/transactions      // get transactions for customer
+        GET /customer/:id/subscriptions     // get subscriptions for customer
+      pre: code.js.
+        new PPS.Customer({
+          id: 'abc123',
+          token: 'kjshfgsjlkfh',
+          hash: 'sdlkjfhsdkj',
+          last4: '0005',
+          bin: '378282',
+          expiration_month: '06',
+          expiration_year: '2016',
+          address: {
             street: '121 W Trade St',
             city: 'Charlotte',
             state: 'NC',
             postalCode: '28202',
             country: 'United States of America'
           }
-        }
+        })
 
 block scripts
   script
