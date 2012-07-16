@@ -12,14 +12,22 @@ $(function() {
 });
 
 $(function(){
-  $('code').each(function(){
+  $('code.js').each(function(){
     $(this).html(highlightJS($(this).text()));
+  });
+  $('code.method').each(function(){
+    $(this).html(highlightMethod($(this).text()));
   });
 });
 
+function lineNumbers(markup) {
+  var lines = markup.split('\n');
+  if(lines[lines.length-1].trim() == '') lines.splice(-1, 1);
+  return '<ol class="line-numbers"><li>' + lines.join('</li><li>') + '</li></ol>';
+}
+
 function highlightJS(js) {
-  return (
-    '<ol class="line-numbers"><li>' + 
+  return lineNumbers(
     js
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
@@ -30,8 +38,12 @@ function highlightJS(js) {
       .replace(/(\b\d+)/gm, '<span class="number">$1</span>')
       .replace(/\bnew *(\w+)/gm, '<span class="keyword">new</span> <span class="init">$1</span>')
       .replace(/\b(function|new|throw|return|var|if|else)\b/gm, '<span class="keyword">$1</span>')
-      .replace(/\b(POST|PUT|GET|DELETE)\b/gm, '<span class="method $1">$1</span>')
-      .replace(/\n/gm, '</li><li>') + 
-    (js.match(/\n/) ? "" : "</li><li>")
-  ).slice(0, -4) + '</ol>';
+  )
+}
+
+function highlightMethod(code) {
+  return code
+    .replace(/\b(POST|PUT|GET|DELETE)\b/gm, '<span class="method $1">$1</span>')
+    .replace(/\/\/(.*)/gm, '<span class="comment">//$1</span>')
+    .replace(/(\:\w+)/gm, '<span class="placeholder">$1</span>')
 }
