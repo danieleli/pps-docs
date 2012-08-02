@@ -4,3 +4,4 @@ public/js/*
 node_modules/
 styl/compiled/*.css
 js/compiled/*.js
+/.DS_Store

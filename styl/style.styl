@@ -123,8 +123,10 @@ article pre
     display inline-block
     vertical-align bottom
     margin 0 0 0 2em
+
     ul
       display inline-block
+      float right
       li
         display inline-block
         margin 0 1em
@@ -135,6 +137,78 @@ article pre
   position relative
   & .no-sidebar
     margin-left -33%
+  #presentation
+    padding 16px
+    height 22em
+    background yellow
+    margin-bottom 16px
+    .welcome-video
+      display inline-block
+      float left
+      width 50%
+      height 100% !important
+      background black
+    .welcome-message
+      display inline-block
+      float right
+      padding 0 16px
+      width 50%
+      height 100% !important
+      & h2, & p
+        margin 0 0 16px 0
+        color #ffffff
+      & h2
+        font-weight bold
+      & p
+        font-weight normal
+      .white-button
+        display block
+        padding 0.5em
+        width 12em
+        font-size 0.75em
+        text-align center
+        color #000000
+        background #ffffff
+        box-shadow 4px 4px 0px 0px #000000
+  #core-features
+    .feature-list
+      & > li
+        display inline-block
+        padding 16px
+        float left
+        width 33.3333%
+        & article
+          .feature-image
+            height 256px
+            background textcolor
+          h3, p
+            margin 16px 0
+        &:first-child
+          padding-left 0
+        &:last-child
+          padding-right 0
+#footer
+  clear both
+  padding 16px 0
+  border-top 1px solid yellow
+  #footer-nav
+    ul
+      clear both
+      li
+        display inline-block
+        float left
+        padding 8px
+        &:first-child
+          padding-left 0
+        & a
+          font-size 0.75em
+    p.copyrite
+      padding 8px 0
+      display inline-block
+      float right
+      font-size 0.75em
+
+
   
   #sidebar
     position absolute
