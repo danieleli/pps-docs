@@ -11,7 +11,7 @@
   "engines": {},
   "dependencies": {},
   "devDependencies": {
-    "mason": "latest",
+    "mason": "0.0.13",
     "serve": "latest"
   },
   "analyze": false,
