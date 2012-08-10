@@ -1,34 +1,399 @@
 extends layout
 
 block content
-  .home.no-sidebar
-    section#presentation
-      .welcome-video
-      .welcome-message
-        h2 Payments for Developers
-        p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nulla est, pharetra sed pharetra quis, rhoncus hendrerit risus. Sed sagittis viverra egestas. Aenean vel dui at tortor gravida tincidunt in id purus. Maecenas eget mauris et libero mollis lobortis a a erat. Cras eu sollicitudin nisl. Donec eu risus at risus faucibus consequat id at quam.
-        a(href='javascript:void(0)').white-button View Documentation
-    section#core-features
-      ul.feature-list
-        li
-          article
-            .feature-image
-            h3 Feature
-            p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce cursus pulvinar metus, vitae condimentum nulla tristique eget. In eu felis ut diam aliquet tristique. Maecenas at ante quis turpis sagittis pretium id ac dui. Mauris vitae sem velit. Suspendisse in.
-          li
-            article
-              .feature-image
-              h3 Feature
-              p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce cursus pulvinar metus, vitae condimentum nulla tristique eget. In eu felis ut diam aliquet tristique. Maecenas at ante quis turpis sagittis pretium id ac dui. Mauris vitae sem velit. Suspendisse in.
-          li
-            article
-              .feature-image
-              h3 Feature
-              p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce cursus pulvinar metus, vitae condimentum nulla tristique eget. In eu felis ut diam aliquet tristique. Maecenas at ante quis turpis sagittis pretium id ac dui. Mauris vitae sem velit. Suspendisse in.
-    footer#footer
-      nav#footer-nav
+  nav.nav#sidebar
+    ul
+      li
+        a(href="#customers") Customers
         ul
-          li: a(href='javascript:void(0)') Footer Link
-          li: a(href='javascript:void(0)') Footer Link
-          li: a(href='javascript:void(0)') Footer Link
-        p.copyrite copyrite 2012
+          li: a(href="#customer_find") Find
+          li: a(href="#customer_get") Get
+          li: a(href="#customer_create") Create
+          li: a(href="#customer_update") Update
+          li: a(href="#customer_card") Add Card
+          li: a(href="#customer_close") Close
+          li: a(href="#customer_remove") Remove
+      li
+        a(href="#transactions") Transactions
+        ul
+          li: a(href="#transaction_find") Find
+          li: a(href="#transaction_get") Get
+          li: a(href="#transaction_create") Create
+          li: a(href="#transaction_settle") Settle
+          li: a(href="#transaction_void") Void
+          li: a(href="#transaction_refund") Refund
+      li
+        a(href="#plan") Plans
+        ul
+          li: a(href="#plan_find") Find
+          li: a(href="#plan_get") Get
+          li: a(href="#plan_create") Create
+          li: a(href="#plan_update") Update
+          li: a(href="#plan_remove") Remove
+      li
+        a(href="#subscription") Subscriptions
+        ul
+          li: a(href="#subscription_get") Get
+          li: a(href="#subscription_create") Create
+          li: a(href="#subscription_update") Update
+          li: a(href="#subscription_remove") Remove
+  
+  article#customers
+    h1 Customers
+    p Customers will handle customers' saved info in the API. Customers will be able to have saved payment types, coupons, plans, and subscriptions. Payment types can be sent at creation or through updates.
+    
+    h2 Routes Overview
+    pre: code.method.
+      GET /customer                       // get all customers with optional filters
+      POST /customer                      // create new customer
+      GET /customer/:id                   // get customer by id
+      PUT /customer/:id                   // update customer by id
+      PUT /customer/:id/close             // close customer account by id
+      DELETE /customer/:id                // delete customer by id
+      POST /customer/:id/card             // create a new card
+      DELETE /customer/:id/card/:cardId   // delete customer's card by id
+      GET /customer/:id/transactions      // get transactions for customer
+      GET /customer/:id/subscriptions     // get subscriptions for customer
+    
+    h2 Properties
+    p Complete list of available properties when retrieving a customer:
+    pre: code.
+      - (guid) id:                    *the ID of the customer in the PPS database*
+      - (String) customId:            *an identifier for the customer in the merchant's system (optional, set when creating the customer)*
+      - (String) firstName
+      - (String) lastName
+      - (String) note
+      - (Integer) transactionCount:   *just a count of all transactions for this customer, details can be found by calling `GET /customers/:id/transactions`*
+      - (Object) billingAddress:      *optionally, instead of having a billing and shipping address, we could just have an array of addresses for a customer*
+        - (String) street
+        - (String) streetExtended
+        - (String) city
+        - (String) state:             *maybe "city/state" could be changed to "locality/region" for non-US customers*
+        - (String) postalCode
+        - (String) country
+      - (Object) shippingAddress
+        - (String) street
+        - (String) streetExtended
+        - (String) city   
+        - (String) state:             *maybe "city/state" could be changed to "locality/region" for non-US customers*
+        - (String) postalCode
+        - (String) country
+      - (String) email:               *this could potentially be an array of emails as well*
+      - (String) phoneNumber:         *this could potentially be an array of phone numbers as well*
+      - (Array) payments:             *array of cards on file for this customer. this design does not currently consider storing anything other than credit cards for a customer.*
+        - (String) id
+        - (String) name
+        - (String) token:             *unique token for each card/customer combination*
+        - (String) hash:              *hash of the card number; used, for example, to distinguish if the same card is used by 2 customers without actually knowing the card number*
+        - (String) last4:             *last 4 digits of card number*
+        - (String) bin:               *first 6 digits of card number*
+        - (String) expiration_month
+        - (String) expiration_year
+        - (Boolean) default:          *whether this is the default card to use for new transactions*
+        - (Object) address:           *optional, the address associated with this card. by default it will use the billing address for the customer*
+    
+    article#customer_find
+      h2 Find
+      pre: code.method GET /customer
+      p Get a list of customers, with optional filter parameters.
+    
+    article#customer_get
+      h2 Get
+    
+    article#customer_create
+      h2 Create
+      pre: code.method POST /customer
+      p Create a new PPS customer object. Takes any of the parameters listed above except for the payments array, which are created through a separate API call (below).
+      h3 Example Request Body
+      pre: code.js.
+        {
+          firstName: "David",
+          lastName: "Becher",
+          id: "abc123", // custom ID specific to our application
+          email: "david@skookum.com",
+          billingAddress: {
+            street: '121 W Trade St',
+            city: 'Charlotte',
+            state: 'NC',
+            postalCode: 28202,
+            country: 'United States of America'
+          }
+        }
+    
+    article#customer_update
+      h2 Update
+      pre: code.method PUT /customer/:id
+      p Update a PPS customer object. Parameters in the body are the same as the create method. Any parameters that are not sent are not updated.
+    
+    article#customer_card
+      h2 Add Card
+      pre: code.method POST /customer/:id/card
+      p Create a new card for a customer. Note that this method takes several parameters that are not ever returned by the API again (by design). Calling this method would add an item to the payments array for a customer.
+      h3 Example request body
+      pre: code.js.
+        {
+          number: '378282246310005',
+          cvv: '123',
+          expiration_month: '06',
+          expiration_year: '2016',
+          address: { // this field is optional, and will default to the customer's billing address
+            street: '121 W Trade St',
+            city: 'Charlotte',
+            state: 'NC',
+            postalCode: '28202',
+            country: 'United States of America'
+          },
+          default: true // optional, if true it will make this card the default and set all other cards to default: false.
+        }
+      h3 Example Response
+      pre: code.js.
+        {
+          id: 'abc123',
+          token: 'kjshfgsjlkfh',
+          hash: 'sdlkjfhsdkj',
+          last4: '0005',
+          bin: '378282',
+          expiration_month: '06',
+          expiration_year: '2016',
+          address: {
+            street: '121 W Trade St',
+            city: 'Charlotte',
+            state: 'NC',
+            postalCode: '28202',
+            country: 'United States of America'
+          }
+        }
+    
+    article#customer_close
+      h2 Close
+      pre: code.method PUT /customer/:id/close
+      p This will close an account but not remove it.
+    
+    article#customer_remove
+      h2 Remove
+      pre: code.method DELETE /customer/:id
+      p Remove account completely from PPS (including payment information).
+  
+  article#transactions
+    h1 Transactions
+    p Transactions are individual payment events by an account. Transactions can be standalone, part of an invoice, or tied to a recurring billing subscription.
+    
+    h2 Routes Overview
+    pre: code.method.
+      GET /transaction                  // get all transactions
+      POST /transaction                 // create new transaction
+      GET /transaction/:id              // get transaction by id
+      DELETE /transaction/:id           // void a transaction
+      POST /transaction/:id/refund      // refund a transaction
+      POST /transaction/:id/settle      // settle a transaction
+    
+    h2 Properties
+    p Complete list of available properties when getting a transaction:
+    pre: code.
+      - (Number) amount
+      - (String) status: *A string representing the status of the transaction. Possible values might include: settled, declined, pending, etc.*
+      - (guid) customerId
+      - (Object) payment
+        - (String) token: *unique token for each card/customer combination*
+        - (String) hash: *hash of the card number; used, for example, to distinguish if the same card is used by 2 customers without actually knowing the card number*
+        - (String) last4: *last 4 digits of card number*
+        - (String) bin: *first 6 digits of card number*
+        - (String) expiration_month
+        - (String) expiration_year
+      - (Object) customer
+        - (String) firstName
+        - (String) lastName
+        - (Object) billingAddress
+          - (String) street
+          - (String) streetExtended
+          - (String) city
+          - (String) state
+          - (String) postalCode
+          - (String) country
+        - (Object) shippingAddress
+          - (String) street
+          - (String) streetExtended
+          - (String) city
+          - (String) state
+          - (String) postalCode
+    
+    article#transaction_find
+      h2 Find
+      pre: code.method.
+        GET /transaction
+        GET /transaction?name=David
+      p Get a list of transactions, with optional filter parameters.
+    
+    article#transaction_get
+      h2 Get
+      pre: code.method GET /transaction/:id
+      p Find a transaction using its id.
+    
+    article#transaction_create
+      h2 Create
+      pre: code.method POST /transaction
+      p Create a new transaction (i.e. charge someone money). The minimum required values for this API call are amount and payment. This API call is designed to take many possible combinations of inputs. Some examples:
+      ul
+        li Just an amount and a payment
+        li An amount, a payment, and customer information
+        li An amount and an existing customer ID with stored payment information
+        li An amount, an existing customer ID, and a payment
+      p There are several possible options here for when the transaction is settled:
+      ol
+        li Transaction is settled immediately (or automatically, at the end of the day, or whatever works best for PPS). I think this should be the default.
+        li Transaction is authorized, but not yet settled. The status of the transaction would switch to a "pending settlement" or something similar. There would then be a separate API call to submit the transaction for settlement.
+      h3 Parameters
+      pre: code.
+        - (Number) amount:              *Required: the total amount to charge*
+        - (Boolean) settle:             *Optional: should this transaction automatically be settled? Defaults to true*
+        - (guid) customerId:            *Optional, unless the <code>payment</code> and/or <code>customer</code> parameters are omitted, in which case this must be a valid customer ID with card information on file*
+        - (Object *or* Temporary Card Token) payment: *Required, unless <code>customerId</code> is specified, in which case this parameter is optional. If sending both a <code>customerId</code> with valid payment information **and** this payment parameter, this payment information will be used in place of the default card on file for the customer*
+          - (String) number
+          - (String) cvv
+          - (String) name
+          - (String) expiration_month
+          - (String) expiration_year
+        - (Object) customer:            *Optional. Do not pass this parameter if passing <code>customerId</code>. This is for passing customer information for a customer that does not exist in the PPS database.*
+          - (String) firstName
+          - (String) lastName
+          - (Object) billingAddress
+            - (String) street
+            - (String) streetExtended
+            - (String) city
+            - (String) state
+            - (String) postalCode
+            - (String) country
+          - (Object) shippingAddress
+            - (String) street
+            - (String) streetExtended
+            - (String) city
+            - (String) state
+            - (String) postalCode
+            - (String) country
+    article#transaction_settle
+      h2 Submit for settlement
+      pre: code.method POST /transaction/:id/settle
+      p This method would settles an existing authorized transaction. It takes 1 parameter, amount, which must be less than or equal to the amount that was originally authorized.
+    
+    article#transaction_void
+      h2 Void
+      pre: code.method DELETE /transaction/:id
+      p Voids a previously authorized transaction. A transaction cannot be voided if it has already been settled.
+    
+    article#transaction_refund
+      h2 Refund
+      pre: code.method POST /transaction/:id/refund
+      p Refunds part or all of a settled transaction. Takes 1 parameter, amount, which must be less than or equal to the amount that was originally charged.
+  
+  article#plan
+    h1 Plans
+    p Plans are preset transactions that will generally be used for recurring billing. The customer's account object can be tied to a recurring plan that will be billed at set increments.
+    
+    h2 Routes Overview
+    pre: code.method.
+      GET /plan                         // get all plans
+      POST /plan                        // create new plan
+      GET /plan/:id                     // get plan by id
+      PUT /plan/:id                     // update plan by id
+      DELETE /plan/:id                  // delete plan by id
+      GET /plan/:id/accounts            // get accounts for plan
+    
+    h2 Properties
+    p List of available properties for a plan.
+    pre: code.
+      - (String) name
+      - (String) code
+      - (String) description
+      - (Number) cost
+      - (Object) intialFees
+        - (Number) setup
+      - (Object) interval     *length of time for each recurring invoice (1 month, etc)*
+        - (String) unit
+        - (Number) quantity
+      - (Object) trial
+        - (String) unit
+        - (Number) quantity
+        
+    article#plan_find
+      h2 Find
+      pre: code.method.
+        GET /plan
+        GET /plan?name=Expert
+      p Get a list of plans, with optional filter parameters.
+    
+    article#plan_get
+      h2 Get
+      pre: code.method GET /plan/:id
+      p Find a specific plan using its id
+    
+    article#plan_create
+      h2 Create
+      pre: code.method POST /plan
+      p Create a new plan
+    
+    article#plan_update
+      h2 Update
+      pre: code.method PUT /plan/:id
+      p Update a plan by ID.
+    
+    article#plan_remove
+      h2 Remove
+      pre: code.method DELETE /plan/:id
+      p Remove a plan. This disallows any further customers from signing up for the plan, but does not remove it from any current subscriptions.
+  
+  article#subscription
+    h1 Subscriptions
+    p Subscription are objects that tie accounts and plans together. They denote a recurring billing cycle a customer has with a particular plan.
+    
+    h2 Routes Overview
+    pre: code.method.
+      GET /subscription                      // get all subscriptions
+      POST /subscription                     // create new subscription
+      GET /subscription/:id                  // get subscription by id
+      PUT /subscription/:id                  // update subscription by id
+      DELETE /subscription/:id               // cancel subscription by id
+    
+    h2 Properties
+    p List of available properties for a subscription.
+    pre: code.
+      - (guid) customer                    *the ID of the customer in the PPS database*
+      - (String) plan
+      - (Date) activated
+      - (Date) renews
+      - (Date) expires
+      - (Boolean) active
+      - (Number) quantity
+      - (Object) currentPeriod
+        - (Date) started
+        - (Date) ends
+      - (Object) trialPeriod
+        - (Date) started
+        - (Date) ends
+    
+    article#subscription_get
+      h2 Get
+      pre: code.method GET /subscription/:id
+      p Find a specific subscription using its id
+    
+    article#subscription_create
+      h2 Create
+      pre: code.method POST /subscription
+      p Create a new subscription.
+    
+    article#subscription_update
+      h2 Update
+      pre: code.method PUT /subscription/:id
+      p Update an existing subscription. The following parameters can be updated:
+      ul
+        li plan
+        li active
+        li quantity
+    
+    article#subscription_remove
+      h2 Remove
+      pre: code.method DELETE /subscription/:id
+      p Remove a subscription.
+
+block scripts
+  script
+    $('body').scrollspy()

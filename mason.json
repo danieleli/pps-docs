@@ -16,12 +16,12 @@
     "destPath": "public/index.html"
   },
 
-  "objects.html": {
+  "landing.html": {
     "type": "jade",
     "sourceRoot": "./jade/",
-    "sourcePaths": ["objects.jade"],
+    "sourcePaths": ["landing.jade"],
     "destRoot": "",
-    "destPath": "public/objects.html"
+    "destPath": "public/landing.html"
   },
 
   "js.js": {
