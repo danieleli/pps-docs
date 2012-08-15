@@ -72,6 +72,7 @@ block content
       pre: code.method.
         GET /transactions
         GET /transactions?name=David
+        GET /transactions?offset=50&limit=25
       p Get a list of transactions, with optional filter parameters.
     
     article#transaction_get
@@ -82,33 +83,33 @@ block content
     article#transaction_create
       h2 Create
       pre: code.method POST /transactions
-      p Create a new transaction (i.e. charge someone money). The minimum required values for this API call are amount and payment. This API call is designed to take many possible combinations of inputs. Some examples:
-      ul
-        li Just an amount and a payment
-        li An amount, a payment, and customer information
-        li An amount and an existing customer ID with stored payment information
-        li An amount, an existing customer ID, and a payment
-      p There are several possible options here for when the transaction is settled:
-      ol
-        li Transaction is settled immediately (or automatically, at the end of the day, or whatever works best for PPS). I think this should be the default.
-        li Transaction is authorized, but not yet settled. The status of the transaction would switch to a "pending settlement" or something similar. There would then be a separate API call to submit the transaction for settlement.
-      h3 Parameters
-      pre: code.
-        (String)  id
-        (Object)  customer
-        (Array)   purchases
-        (Array)   coupons
-        (Array)   payments
-        (Object)  plan
-        (Number)  subTotalAmount
-        (Number)  taxAmount
-        (Number)  shipAmount
-        (Number)  totalAmount
-        (Number)  tipAmount
-        (String)  currency
-        (Number)  balance
-        (String)  referenceNumber
-        (Object)  metaData
+      //- p Create a new transaction (i.e. charge someone money). The minimum required values for this API call are amount and payment. This API call is designed to take many possible combinations of inputs. Some examples:
+      //- ul
+      //-   li Just an amount and a payment
+      //-   li An amount, a payment, and customer information
+      //-   li An amount and an existing customer ID with stored payment information
+      //-   li An amount, an existing customer ID, and a payment
+      //- p There are several possible options here for when the transaction is settled:
+      //- ol
+      //-   li Transaction is settled immediately (or automatically, at the end of the day, or whatever works best for PPS). I think this should be the default.
+      //-   li Transaction is authorized, but not yet settled. The status of the transaction would switch to a "pending settlement" or something similar. There would then be a separate API call to submit the transaction for settlement.
+      //- h3 Parameters
+      //- pre: code.
+      //-   (String)  id
+      //-   (Object)  customer
+      //-   (Array)   purchases
+      //-   (Array)   coupons
+      //-   (Array)   payments
+      //-   (Object)  plan
+      //-   (Number)  subTotalAmount
+      //-   (Number)  taxAmount
+      //-   (Number)  shipAmount
+      //-   (Number)  totalAmount
+      //-   (Number)  tipAmount
+      //-   (String)  currency
+      //-   (Number)  balance
+      //-   (String)  referenceNumber
+      //-   (Object)  metaData
     
     article#transaction_void
       h2 Void
