@@ -4,12 +4,28 @@ block content
   nav.nav#sidebar
     ul
       li
+        a(href="#auth") Authorization
+        ul
+          li: a(href="#auth_overview") Overview
+          li: a(href="#auth_getr") Get Request Token
+          li: a(href="#auth_geta") Get Access Token
+          li: a(href="#auth_request") Api Request Auth
+      li
         a(href="#transactions") Transactions
         ul
           li: a(href="#transaction_find") Find
           li: a(href="#transaction_get") Get
           li: a(href="#transaction_create") Create
+          li: a(href="#transaction_update") Update
           li: a(href="#transaction_void") Void
+      li
+        a(href="#purchases") Purchases
+        ul
+          li: a(href="#purchase_find") Find
+          li: a(href="#purchase_get") Get
+          li: a(href="#purchase_create") Create
+          li: a(href="#purchase_update") Update
+          li: a(href="#purchase_void") Delete
       //- li
       //-   a(href="#customers") Customers
       //-   ul
@@ -36,17 +52,85 @@ block content
       //-     li: a(href="#subscription_update") Update
       //-     li: a(href="#subscription_remove") Remove
   
+  article#auth
+    h1 Authorization
+
+    article#auth_overview
+      h2 Overview
+      p Authorization is handled via OAuth 1A standards.  The authorization process consists of 2 requests. First you must get a request token and then an access token. The access token can be used for all subsequent calls to the services.
+
+    article#auth_getr
+      h2 Get Request Token
+      h3 Request
+      pre: code.method.
+        POST https://api.pps.io/v1/OAuth/1A/RequestToken HTTP/1.1
+        Authorization: OAuth oauth_consumer_key="00000000-0000-0000-0000-000000000000",
+                             oauth_nonce="0YhM7uEp",
+                             oauth_signature_method="HMAC-SHA1",
+                             oauth_signature="N3245RcYzkY01yQsgB1fqIlF4cY%3D",
+                             oauth_version="1.0",
+                             oauth_timestamp="1344019030"
+        Accept: application/x-www-form-urlencoded
+
+      h3 Response
+      pre: code.method.
+        HTTP/1.1 200 OK
+        Content-Type: application/x-www-form-urlencoded
+
+        oauth_token=660b21b4-d3ee-4ce1-84f5-a3ec8c52ea42&oauth_token_secret=dea7c4de-f346-403f-962c-181ae8338800
+
+    article#auth_geta
+      h2 Get Access Token
+      h3 Request
+      pre: code.method.
+        POST https://api.pps.io/v1/OAuth/1A/AccessToken HTTP/1.1
+        Authorization: OAuth oauth_token="4499eddf-2633-415a-b221-90cbf7823dce",
+                             oauth_consumer_key="00000000-0000-0000-0000-000000000000",
+                             oauth_nonce="vYXqb3Jq",
+                             oauth_signature_method="HMAC-SHA1",
+                             oauth_signature="%2FUeW4NTL4NV88XOYPAKr3ANGn7A%3D",
+                             oauth_version="1.0",
+                             oauth_timestamp="1344019030"
+        Accept: application/x-www-form-urlencoded
+
+      h3 Response
+      pre: code.method.
+        HTTP/1.1 200 OK
+        Content-Type: application/x-www-form-urlencoded
+
+        oauth_token=d7874463-b31b-4851-be5f-bcea985f895d&oauth_token_secret=19142a9a-f2fb-4c72-8238-80b63645aba5
+
+    article#auth_request
+      h2 Api Request Auth
+      p Every request that is sent to the API will be accompanied with the proper auth.  This will consist of several parameters added to the querystring.
+      dl
+        dt oauth_token 
+        dd the previously acquired token
+        dt oauth_consumer_key
+        dd this is the public key for the consumer account being used for the request
+        dt oauth_nonce
+        dd a unique string that can only be used once per request
+        dt oauth_signature_method
+        dd this should be set to: HMAC-SHA1 
+        dt oauth_signature
+        dd the signature is a hash of the entire request and consumer secret
+        dt oauth_version
+        dd this should be set to: 1.0
+        dt oauth_timestamp
+        dd the unix timestamp defining when the request was sent
+
+
   article#transactions
     h1 Transactions
     p Transactions are the overall container for most of the other objects.
     
     h2 Routes Overview
     pre: code.method.
-      GET     /transactions                // get all transactions
-      POST    /transactions                // create new transaction
-      GET     /transactions/:id            // get transaction by id
-      PUT     /transactions/:id            // update transaction by id
-      DELETE  /transactions/:id            // void a transaction
+      GET     /transaction                // get all transactions
+      POST    /transaction                // create new transaction
+      GET     /transaction/:id            // get transaction by id
+      PUT     /transaction/:id            // update transaction by id
+      DELETE  /transaction/:id            // void a transaction
     
     h2 Properties
     p Complete list of available properties when getting a transaction:
@@ -70,51 +154,112 @@ block content
     article#transaction_find
       h2 Find
       pre: code.method.
-        GET /transactions
-        GET /transactions?name=David
-        GET /transactions?offset=50&limit=25
-      p Get a list of transactions, with optional filter parameters.
+        GET /transaction
+        GET /transaction?referenceNumber=1244567
+        GET /transaction?offset=50&limit=25
+      p Get a list of transactions, with optional filter and paging parameters.
     
     article#transaction_get
       h2 Get
-      pre: code.method GET /transactions/:id
+      pre: code.method.
+        GET /transaction/:id
       p Find a transaction using its id.
     
     article#transaction_create
       h2 Create
-      pre: code.method POST /transactions
-      //- p Create a new transaction (i.e. charge someone money). The minimum required values for this API call are amount and payment. This API call is designed to take many possible combinations of inputs. Some examples:
-      //- ul
-      //-   li Just an amount and a payment
-      //-   li An amount, a payment, and customer information
-      //-   li An amount and an existing customer ID with stored payment information
-      //-   li An amount, an existing customer ID, and a payment
-      //- p There are several possible options here for when the transaction is settled:
-      //- ol
-      //-   li Transaction is settled immediately (or automatically, at the end of the day, or whatever works best for PPS). I think this should be the default.
-      //-   li Transaction is authorized, but not yet settled. The status of the transaction would switch to a "pending settlement" or something similar. There would then be a separate API call to submit the transaction for settlement.
-      //- h3 Parameters
-      //- pre: code.
-      //-   (String)  id
-      //-   (Object)  customer
-      //-   (Array)   purchases
-      //-   (Array)   coupons
-      //-   (Array)   payments
-      //-   (Object)  plan
-      //-   (Number)  subTotalAmount
-      //-   (Number)  taxAmount
-      //-   (Number)  shipAmount
-      //-   (Number)  totalAmount
-      //-   (Number)  tipAmount
-      //-   (String)  currency
-      //-   (Number)  balance
-      //-   (String)  referenceNumber
-      //-   (Object)  metaData
+      pre: code.method POST /transaction
+      p Create a new transaction with given parameters.
+      h3 Parameters
+      pre: code.
+        (String)  id
+        (Object)  customer
+        (Array)   purchases
+        (Array)   coupons
+        (Array)   payments
+        (Object)  plan
+        (Number)  subTotalAmount
+        (Number)  taxAmount
+        (Number)  shipAmount
+        (Number)  totalAmount
+        (Number)  tipAmount
+        (String)  currency
+        (Number)  balance
+        (String)  referenceNumber
+        (Object)  metaData
     
+    article#transaction_update
+      h2 Update
+      pre: code.method PUT /transaction/:id
+      p Update a transaction using its id.
+
     article#transaction_void
       h2 Void
       pre: code.method DELETE /transactions/:id
       p Voids a previously authorized transaction. A transaction cannot be voided if it has already been settled.
+
+
+
+  article#purchases
+    h1 Purchases
+    p Purchases are items that are purchased as part of a transaction.
+    
+    h2 Routes Overview
+    pre: code.method.
+      GET     /purchase                // get all purchases
+      POST    /purchase                // create new purchase
+      GET     /purchase/:id            // get purchase by id
+      PUT     /purchase/:id            // update purchase by id
+      DELETE  /purchase/:id            // delete a purchase
+    
+    h2 Properties
+    p Complete list of available properties when getting a purchase:
+    pre: code.
+      (String)  id
+      (String)  name
+      (Number)  price
+      (String)  currency
+      (Boolean) shipped
+      (String)  trackingNumber
+      (Array)   coupons
+      (Array)   taxes
+    
+    article#purchase_find
+      h2 Find
+      pre: code.method.
+        GET /purchase
+        GET /purchase?name=Red%20Ball
+        GET /purchase?offset=50&limit=25
+      p Get a list of purchases, with optional filter and paging parameters.
+    
+    article#purchase_get
+      h2 Get
+      pre: code.method GET /purchase/:id
+      p Find a purchase using its id.
+    
+    article#purchase_create
+      h2 Create
+      pre: code.method POST /purchase
+      p Create a new puchase with given parameters.
+      h3 Parameters
+      pre: code.
+        (String)  id
+        (String)  name
+        (Number)  price
+        (String)  currency
+        (Boolean) shipped
+        (String)  trackingNumber
+        (Array)   coupons
+        (Array)   taxes
+
+    article#purchase_update
+      h2 Update
+      pre: code.method PUT /purchase/:id
+      p Update a purchase using its id.
+
+    article#purchase_delete
+      h2 Delete
+      pre: code.method PUT /purchase/:id
+      p Delete a purchase using its id.
 
 
   //- article#customers
