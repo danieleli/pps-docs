@@ -5,7 +5,7 @@ global-reset()
 reset-html5()
 
 /* Variables */
-yellow = #ffeb01
+yellow = #ffea00
 bgcolor = #282224
 textcolor = #d0d0d0
 menucolor = #ffffff
@@ -42,6 +42,7 @@ h1, h2, h3, h4, h5, h6
 h1, .h1
   font-weight 900
   font-size 4.25em
+  line-height 1em
   color #fff
   margin 0.6666em 0
 h2, .h2
@@ -184,6 +185,27 @@ dl
         color #000000
         background #ffffff
         box-shadow 4px 4px 0px 0px #000000
+  #introduction ul.introduction-material
+    margin-left 4.5em
+    li
+      list-style none
+      article.intro-element
+        h3
+          position relative
+        h3::before
+          display block
+          content ''
+          position absolute
+          top -0.5em
+          left -3em
+          height 4em
+          width 4em
+        h3.id::before
+          background url('/images/icon_card.png') no-repeat
+        h3.gear::before
+          background url('/images/icon_gears.png') no-repeat
+        h3.puzzle::before
+          background url('/images/icon_puzzle.png') no-repeat
   #core-features
     .feature-list
       & > li
@@ -215,21 +237,29 @@ dl
       > li
         margin-bottom 1em
         > a
+          font-size 0.75em
+          font-weight bold
+          text-transform uppercase
           display block
           padding 0.25em
           margin-bottom 0.5em
         &.active > a
           background yellow
           color bgcolor
-        > ul
-          padding-left 1em
+        > ul.sub-menu
+          padding-left 1.25em
           > li
             > a
               position relative
+              font-size 0.85em
+              color #d2d2d2
               &:after
-                content '>'
+                content ''
                 display block
                 position absolute
+                background yellow
+                height 100% !important
+                width 0.4em
                 top 0
                 left -20px
                 opacity 0
@@ -238,7 +268,7 @@ dl
                 transition-timing-function ease-in-out
             &.active > a:after
               opacity 1
-              left -16px
+              left -20px
 
 #footer
   clear both
@@ -263,6 +293,8 @@ dl
 
 
 article
+  h1
+    text-transform uppercase
   p, ul, ol
     margin-bottom 1em
   ul, ol

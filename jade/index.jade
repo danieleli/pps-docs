@@ -3,16 +3,17 @@ extends layout
 block content
   nav.nav#sidebar
     ul
+      li: a(href="#introduction") Introduction
       li
         a(href="#auth") Authorization
-        ul
+        ul.sub-menu
           li: a(href="#auth_overview") Overview
           li: a(href="#auth_getr") Get Request Token
           li: a(href="#auth_geta") Get Access Token
           li: a(href="#auth_request") Api Request Auth
       li
         a(href="#transactions") Transactions
-        ul
+        ul.sub-menu
           li: a(href="#transaction_find") Find
           li: a(href="#transaction_get") Get
           li: a(href="#transaction_create") Create
@@ -20,7 +21,7 @@ block content
           li: a(href="#transaction_void") Void
       li
         a(href="#purchases") Purchases
-        ul
+        ul.sub-menu
           li: a(href="#purchase_find") Find
           li: a(href="#purchase_get") Get
           li: a(href="#purchase_create") Create
@@ -51,6 +52,33 @@ block content
       //-     li: a(href="#subscription_create") Create
       //-     li: a(href="#subscription_update") Update
       //-     li: a(href="#subscription_remove") Remove
+
+  article#introduction
+    h1 Because payments are a priority
+    article.description
+      p The Priority Payment Systems API is organized around REST. It’s designed to have predictable,
+        | resource-oriented URLs, to use HTTP response codes to indicate API errors, and to use built-in HTTP features,
+        | like HTTP authentication and HTTP verbs, which can be understood by off-the-shelf HTTP clients. JSON will be 
+        | returned in all responses from the API, including errors.
+    ul.introduction-material
+      li
+        article.intro-element
+          h3.id Full-Stack Payments
+          p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tortor odio, pretium non varius a, porttitor sit 
+            | amet ligula. Ut eu tellus non felis lacinia congue. Integer malesuada laoreet elit in adipiscing. 
+            | Nullam diam nunc, congue sed tempus vel, eleifend non lacus posuere.
+      li
+        article.intro-element
+          h3.gear An API That Gets Out of the Way
+          p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tortor odio, pretium non varius a, porttitor sit 
+            | amet ligula. Ut eu tellus non felis lacinia congue. Integer malesuada laoreet elit in adipiscing. 
+            | Nullam diam nunc, congue sed tempus vel, eleifend non lacus posuere.
+      li
+        article.intro-element
+          h3.puzzle Pricing Like It Should Be
+          p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tortor odio, pretium non varius a, porttitor sit 
+            | amet ligula. Ut eu tellus non felis lacinia congue. Integer malesuada laoreet elit in adipiscing. 
+            | Nullam diam nunc, congue sed tempus vel, eleifend non lacus posuere.
   
   article#auth
     h1 Authorization
@@ -256,7 +284,7 @@ block content
       pre: code.method PUT /purchase/:id
       p Update a purchase using its id.
 
-    article#purchase_delete
+    article#purchase_void
       h2 Delete
       pre: code.method PUT /purchase/:id
       p Delete a purchase using its id.
@@ -510,4 +538,12 @@ block content
 
 block scripts
   script
+    if( $('#main article:last').height() < $(window).height() ) {
+      var x = $(window).height() - $('#main article:last').height();
+      console.log( x );
+      $('#main article:last').css({
+        'padding-bottom' : x + 'px'
+      });
+    }
+
     $('body').scrollspy()
