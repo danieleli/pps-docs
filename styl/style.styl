@@ -21,7 +21,8 @@ body
   width 80%
   color textcolor
   margin 0 auto
-  font 1em/1.3125em Helvetica, Arial, sans-serif
+  font 1em/1.3125em 'Helvetica-Light', Helvetica, Arial, sans-serif
+  font-weight thin
 
 a:link, a:active, a:visited
   color yellow
@@ -52,13 +53,38 @@ h3, .h3
   font-size 1.625em
   color #afb092
   margin 1.385em 0
+h4, .h4
+  font-size 1em
+  color #ffffff
 
-pre, .url
+pre, table, .url
   font-family code-font
   background #2c2c2c
   border-radius 0.5em
   padding 0.5em
   margin 1em 0
+
+pre, table
+  box-shadow inset 1px -1px 0px 0px #393a34
+
+table
+  width 100%
+  font 1em/1.3125em Helvetica, Arial, sans-serif
+  padding 0
+  margin 5em 0
+  tr
+    th, td
+      padding 0.5em
+      border-bottom 1px solid #55544a
+      border-right 1px solid #55544a
+    td
+      font-size 0.75em
+      font-weight normal
+      color #b0b193
+    &:last-child > td
+      border-bottom none
+    & td:last-child, & th:last-child
+      border-right none
 
 article pre
   overflow-x auto
@@ -291,6 +317,9 @@ dl
       float right
       font-size 0.75em
 
+#introduction
+  & > h1
+    margin-top 0
 
 article
   h1
@@ -305,3 +334,32 @@ article
     list-style-type disc
   ol li
     list-style-type decimal
+
+#modal-dialogue
+  display hidden
+  position relative
+  padding 1.5em
+  background #262626
+  box-shadow 0px 0px 32px 0px #000000, inset 0px 1px 0px 0px #393a34
+  border-radius 0.5em
+  width 50%
+  a.close
+    display block
+    position absolute
+    top 1.5em
+    right 1.5em
+    height 1em
+    width 1em
+    background url('/images/modal-close.png') no-repeat
+    text-indent -99999px
+  a.go
+    position relative
+  a.go::after
+    display block
+    position absolute
+    content ''
+    border-top 0.4em solid transparent
+    border-bottom 0.4em solid transparent
+    border-left 0.4em solid yellow
+    top 0.2em
+    right -1em

@@ -80,6 +80,35 @@ block content
             | amet ligula. Ut eu tellus non felis lacinia congue. Integer malesuada laoreet elit in adipiscing. 
             | Nullam diam nunc, congue sed tempus vel, eleifend non lacus posuere.
   
+  article
+    table
+      tr
+        th Label
+        th Column
+        th Column
+        th Column
+      tr
+        td Type A
+        td Information
+        td More Information
+        td And Even More
+      tr
+        td Type B
+        td Information
+        td More Information
+        td And Even More
+      tr
+        td Type C
+        td Information
+        td More Information
+        td And Even More
+      tr
+        td Type D
+        td Information
+        td More Information
+        td And Even More
+
+
   article#auth
     h1 Authorization
 
@@ -288,6 +317,21 @@ block content
       h2 Delete
       pre: code.method PUT /purchase/:id
       p Delete a purchase using its id.
+
+    #modal-dialogue
+      a(href='javascript:void(0)').close Close Dialoge
+      h4 Create Customer:
+      pre: code.method POST /customers
+      p Create a new PPS customer object. Takes any of the 
+        a(href='#') customer parameters
+        |  except for the 
+        a(href='#') payments array
+        | , which are created through a seperate API call.
+      a(href='#').go Full Documentation
+
+
+
+
 
 
   //- article#customers
