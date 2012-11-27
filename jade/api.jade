@@ -1,1 +1,70 @@
 extends layout
+
+block content
+    script(src='/pps-api-docs-site/js/api_shortlist.js') 
+    div#main(role='application')
+    div#sidebar.nav
+        ul(data-bind='foreach: apiDeclarations')
+          li
+            a(data-bind='attr: { href: \'#\' + resourcePath }, text: resourcePath')
+            ul(data-bind='foreach: apis')
+              li
+                a(data-bind='attr: { href: \'#\' + $parent.resourcePath + \'_\' + $data.operations[0].nickname }, text: $data.operations[0].nickname')
+      div(data-bind='foreach: apiDeclarations')
+        hr(style='margin: 50px 0; border-color: #666;')
+        .article(data-bind='attr: {id: resourcePath}')
+          h1(data-bind='text: resourcePath')
+          p(data-bind='text: description')
+          h2 Routes Overview
+          .well
+            code
+              // ko foreach: apis 
+              span.route
+                span.method(data-bind='text: $data.operations[0].httpMethod, css: $data.operations[0].httpMethod')
+                span.path
+                  span(data-bind='text: $data.path')
+                span.comment
+                  | \\
+                  span(data-bind='text: description')
+              // /ko 
+          h2 Models
+          .well
+            // ko foreach: models 
+            .model(data-bind='attr: { id: $data.id }')
+              .model-type(data-bind='text: $data.id, attr: { \'data-target\': (\'#\' + $data.id + \'_properties\') }', data-toggle='collapse')
+              .properties.collapse.in(data-bind='attr: { id: $data.id + \'_properties\' }')
+                //  ko foreach: properties 
+                div(style='white-space: nowrap;')
+                  | -
+                  span(style='color: #bbb;')
+                    | (
+                    span.type(data-bind='text: $data.value.type')
+                    | )
+                  span.name(data-bind='text: $data.name')
+                  | :
+                  span.description(data-bind='text: $data.value.description')
+                // /ko 
+            br
+            // /ko 
+          br
+          h2 Route Details
+          // ko foreach: apis 
+          div(data-bind='attr: { id: $parent.resourcePath + \'_\' + $data.operations[0].nickname }, text: $data.operations[0].nickname')
+          .well
+            code
+              span.route
+                span.method(data-bind='text: $data.operations[0].httpMethod, css: $data.operations[0].httpMethod')
+                span.path
+                  span(data-bind='text: $data.path')
+          div(data-bind='text: $data.operations[0].notes')
+          br
+          // /ko 
+          br
+          br
+  block scripts 
+
+    script(src='/pps-api-docs-site/js/api_objects_knockout.js')  
+    script
+      $(function() {
+        window.loadKnockout();
+      }); 
