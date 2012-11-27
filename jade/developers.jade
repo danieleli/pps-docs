@@ -1,7 +1,277 @@
-//
-   Created with JetBrains WebStorm.
-   User: davidmathena
-   Date: 11/19/12
-   Time: 9:15 AM
-   To change this template use File | Settings | File Templates.
+extends layout
 
+block content
+    h1(style='margin: 0;')
+        | MX
+        span(style='font-size: 0.5em; position: relative; top: -12px;') ™
+        | Merchant API
+    p
+        | Integrate payment processing into your website, custom application or mobile app using MX Merchant API. Create seamless integration with online account management for fast and accurate transactions, access to customer data and more.
+    .buttons.left
+        img(src='/t/images/dev-varpos.png', alt='')
+        .blu VAR/POS
+        | Use MX Merchant API to integrate your POS solutions with online account management tools for fast access to sales data.
+    .buttons.right
+        img(src='/t/images/dev-mobile.png', alt='')
+        .blu MOBILE APPS
+        | Add payment processing to your mobile apps with MX Merchant API.
+    .buttons.left.last
+        img(src='/t/images/dev-web.png', alt='')
+        .blu WEBSITES
+        | MX Merchant API makes it easy to integrate your shopping cart solution.
+    .buttons.right.last
+        img(src='/t/images/dev-game.png', alt='')
+        .blu SOCIAL/GAMING
+        | MX Merchant API lets you collect recurring payments, track customer transactions and more.
+    nav.nav#sidebar
+        ul
+            li
+                a(href='#intro') Overview
+                ul.sub-menu
+                    li
+                        a(href='#get_started') Getting started
+                    li
+                        a(href='#http') Requests & Responses
+                    li
+                        a(href='#pagination') Pagination
+            li
+                a(href='#security') Security
+                ul.sub-menu
+                    li
+                        a(href='#auth_overview') Using OAuth
+                    li
+                        a(href='#auth_direct') Direct access
+                    li
+                        a(href='#auth_application') Accesing via applications
+    .article#get_started
+        h1 Getting started
+
+        .article
+            p Not sure how a user gets started???
+    .article#http
+        h1 REST services
+        p The MX™Merchant API is implemented as a full featrued REST service. Every request is a standard
+            | HTTP request and result in an HTTP status code.
+        h2 Http Requests
+        h3 Data Formats
+        p Developers can request control the format of the response data by setting the Accept request header to&nbsp;
+            | any of the following values.
+            ul
+                li application/json
+                li application/xml
+                li application/x-www-form-urlencoded
+                li application/octet-stream
+                li application/x-protobuf
+        p Similarly, developers can request a specific response format by including an extension in the URL.
+            | Here are the supported extensions.
+            ul
+                li .json
+                li .xml
+                li .proto
+        h3 Accept-Encoding:
+        p The API provides developers with the option of compressing the responses. This can be done by setting
+            | the Accept-Encoding request header to gzip.
+        h3 Example
+        p Here is an example of a request that expects a gzip compressed JSON response:
+        pre: code.method.
+              GET https://api.pps.io/v1/customer HTTP/1.1
+              Authorization: OAuth oauth_consumer_key="00000000-0000-0000-0000-000000000000",
+                                   oauth_nonce="0YhM7uEp",
+                                   oauth_signature_method="HMAC-SHA1",
+                                   oauth_signature="N3245RcYzkY01yQsgB1fqIlF4cY%3D",
+                                   oauth_version="1.0",
+                                   oauth_timestamp="1344019030"
+              Accept: application/json
+              Accept-Encoding: gzip
+        h2 Http Responses
+        p Developers will use this status code to insure that the application is performing as expected.
+        h3 HTTP Status Codes
+        p All success status codes will be between 200 - 299
+            ul
+                li 200 OK
+                    p The request was successful.
+                li 201 Created
+                    p The resource was successfully created.
+                li 204 No Content
+                    p The request was successful and there is no response. This is the response to all delete requests.
+        p Error status codes will be between 400 - 499
+            ul
+                li 400 Bad Request
+                    p The request was failed validation or could not be understood by the server.
+                li 401 Unauthorized
+                    p Your API key is missing or invalid.
+                li 403 Forbidden
+                    p The request is attempting to access a resource it does not have privileges to access.
+                li 404 Not Found
+                    p The requested resource could not be found.
+                li 406 Not Acceptable
+                    p The request's Accept header is invalid.
+    .article#pagination
+        h1 Pagination
+        p Paged responses allow developers to request targetted data without getting results that they might not need.
+        | All GET requests support an offset and limit parameter that can be used for paging. The pagination
+        | defaults are offset = 0 and limit = 10.
+    .article#security
+        h1 Security
+        .article#auth_overview
+            h2 Using OAuth
+            p Authorization is handled via
+                a(href="http://tools.ietf.org/html/rfc5849", parent="blank") &nbsp;OAuth 1A (RFC 5849)&nbsp;
+                | standards.  The authorization process consists of 2
+                | requests. First you must get a request token and then an access token. The access token
+                | can be used for all subsequent calls to the services.
+            p Priority Payments chose to utilize OAuth because it is an open standard. This allows developers
+                | to take advantage of several open-source client libraries. Utilizing one of these libraries
+                | will reduce the time spent implementing authorization. These libraries have been implemented
+                | in many of the most popular programming languages and you can review many of them on
+                | the OAuth site:&nbsp;
+                a(href="http://oauth.net/code", target="blank") http://oauth.net/code
+                | .
+            p For more information about OAuth, please visit the&nbsp;
+                a(href="http://oauth.net.", target="blank") OAuth website
+        .article#auth_direct
+            h2 Direct access
+            p This authentication flow is designed for developers that are are attempting to access data
+                | associated to their account using the API. Developers commonly refer to this as 2-legged
+                | OAuth authentication. There are 3 steps authenticating:
+
+            h3 Get Request Token
+            h4 Request
+            pre: code.method.
+              POST https://api.pps.io/v1/OAuth/1A/RequestToken HTTP/1.1
+              Authorization: OAuth oauth_consumer_key="00000000-0000-0000-0000-000000000000",
+                                   oauth_nonce="0YhM7uEp",
+                                   oauth_signature_method="HMAC-SHA1",
+                                   oauth_signature="N3245RcYzkY01yQsgB1fqIlF4cY%3D",
+                                   oauth_version="1.0",
+                                   oauth_timestamp="1344019030"
+              Accept: application/x-www-form-urlencoded
+
+            h4 Response
+            pre: code.method.
+              HTTP/1.1 200 OK
+              Content-Type: application/x-www-form-urlencoded
+
+              oauth_token=660b21b4-d3ee-4ce1-84f5-a3ec8c52ea42&oauth_token_secret=dea7c4de-f346-403f-962c-181ae8338800
+
+            h3 Get Access Token
+            h4 Request
+            pre: code.method.
+              POST https://api.pps.io/v1/OAuth/1A/AccessToken HTTP/1.1
+              Authorization: OAuth oauth_token="4499eddf-2633-415a-b221-90cbf7823dce",
+                                   oauth_consumer_key="00000000-0000-0000-0000-000000000000",
+                                   oauth_nonce="vYXqb3Jq",
+                                   oauth_signature_method="HMAC-SHA1",
+                                   oauth_signature="%2FUeW4NTL4NV88XOYPAKr3ANGn7A%3D",
+                                   oauth_version="1.0",
+                                   oauth_timestamp="1344019030"
+              Accept: application/x-www-form-urlencoded
+
+            h4 Response
+            pre: code.method.
+              HTTP/1.1 200 OK
+              Content-Type: application/x-www-form-urlencoded
+
+              oauth_token=d7874463-b31b-4851-be5f-bcea985f895d&oauth_token_secret=19142a9a-f2fb-4c72-8238-80b63645aba5
+
+            h3 Api Request Auth
+            p Every request that is sent to the API will be accompanied with the proper auth.  This will consist of several parameters added to the querystring.
+            dl
+                dt oauth_token
+                dd the previously acquired token
+                dt oauth_consumer_key
+                dd this is the public key for the consumer account being used for the request
+                dt oauth_nonce
+                dd a unique string that can only be used once per request
+                dt oauth_signature_method
+                dd this should be set to: HMAC-SHA1
+                dt oauth_signature
+                dd the signature is a hash of the entire request and consumer secret
+                dt oauth_version
+                dd this should be set to: 1.0
+                dt oauth_timestamp
+                dd the unix timestamp defining when the request was sent
+        .article#auth_application
+            h2 Accessing via applications
+            p Developers that are writing applications for users are going to use to access their data should
+                | use this authetication method. Developers refer to this flow as 3-legged OAuth Authentication.
+            h3 Get Request Token
+            p This request is similar to the first example except that it includes an oauth_callback parameter
+                | which will be used to notify the client that the user completed the authorization process.
+            h4 Request
+            pre: code.method.
+                POST https://api.pps.io/v1/OAuth/1A/AccessToken HTTP/1.1ß
+                Authorization: OAuth oauth_token="4499eddf-2633-415a-b221-90cbf7823dce",
+                                   oauth_consumer_key="00000000-0000-0000-0000-000000000000",
+                                   oauth_nonce="vYXqb3Jq",
+                                   oauth_signature_method="HMAC-SHA1",
+                                   oauth_signature="%2FUeW4NTL4NV88XOYPAKr3ANGn7A%3D",
+                                   oauth_version="1.0",
+                                   oauth_timestamp="1344019030"
+                                   oauth_callback ="http://your.callback.url"
+                Accept: application/x-www-form-urlencoded
+            h4 Response
+            pre: code.method.
+                HTTP/1.1 200 OK
+                Content-Type: application/x-www-form-urlencoded
+
+                oauth_token=d7874463-b31b-4851-be5f-bcea985f895d&oauth_token_secret=19142a9a-f2fb-4c72-8238-80b63645aba5&oauth_callback_confirmed=true
+            h4 Redirect to Login
+            p The developer should redirect the user to the Priority Payments login so the user can authenticate and connect
+                | the application to their merchant account. After the user authenticates with Priority, we
+                | will make a callback to the oauth_callback URL that was included in the request token request.
+                | This callback will include two important parameters. These are oauth_token and oauth_verifier.
+            pre: code.method.
+              GET /cb?oauth_token=d7874463-b31b-4851-be5f-bcea985f895d&oauth_verifier=4732f82d3  HTTP/1.1
+              Host: http://your.callback.url
+            h3 Get Access Token
+            p Similar to the previous example except this request includes the oauth_verifier from the earlier response.
+            h4 Request
+            pre: code.method.
+              POST https://api.pps.io/v1/OAuth/1A/AccessToken HTTP/1.1
+              Authorization: OAuth oauth_token="4499eddf-2633-415a-b221-90cbf7823dce",
+                                   oauth_consumer_key="00000000-0000-0000-0000-000000000000",
+                                   oauth_nonce="vYXqb3Jq",
+                                   oauth_signature_method="HMAC-SHA1",
+                                   oauth_signature="%2FUeW4NTL4NV88XOYPAKr3ANGn7A%3D",
+                                   oauth_version="1.0",
+                                   oauth_timestamp="1344019030",
+                                   oauth_verifier=4732f82d3
+              Accept: application/x-www-form-urlencoded
+
+            h4 Response
+            pre: code.method.
+              HTTP/1.1 200 OK
+              Content-Type: application/x-www-form-urlencoded
+
+              oauth_token=d7874463-b31b-4851-be5f-bcea985f895d&oauth_token_secret=19142a9a-f2fb-4c72-8238-80b63645aba5
+
+            h3 Api Request Auth
+            p Every request that is sent to the API will be accompanied with the proper auth.  This will consist of several parameters added to the querystring.
+            dl
+                dt oauth_token
+                dd the previously acquired token
+                dt oauth_consumer_key
+                dd this is the public key for the consumer account being used for the request
+                dt oauth_nonce
+                dd a unique string that can only be used once per request
+                dt oauth_signature_method
+                dd this should be set to: HMAC-SHA1
+                dt oauth_signature
+                dd the signature is a hash of the entire request and consumer secret
+                dt oauth_version
+                dd this should be set to: 1.0
+                dt oauth_timestamp
+                dd the unix timestamp defining when the request was sent
+
+block scripts
+    script
+        if( $('#main article:last').height() < $(window).height() ) {
+          var x = $(window).height() - $('#main article:last').height();
+          console.log( x );
+          $('#main article:last').css({
+            'padding-bottom' : x + 'px'
+          });
+        }
+
+        $('body').scrollspy()

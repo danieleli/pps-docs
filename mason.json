@@ -1,38 +1,22 @@
 {
 
-  "style.css": {
-    "type": "stylus",
-    "sourceRoot": ".",
-    "sourcePaths": ["/styl/style.styl"],
-    "destRoot": ".",
-    "destPath": "/styl/compiled/style.css"
-  },
+    "developer.html": {
+        "type": "jade",
+        "fromBase": "./jade/",
+        "fromSrc": ["developers.jade"],
+        "toBase": "",
+        "toSrc": "public/developers.html"
+    },
 
-  "index.html": {
-    "type": "jade",
-    "sourceRoot": "./jade/",
-    "sourcePaths": ["index.jade"],
-    "destRoot": "",
-    "destPath": "public/index.html"
-  },
-
-  "landing.html": {
-    "type": "jade",
-    "sourceRoot": "./jade/",
-    "sourcePaths": ["landing.jade"],
-    "destRoot": "",
-    "destPath": "public/landing.html"
-  },
-
-  "js.js": {
-    "type": "javascript",
-    "sourceRoot": ".",
-    "sourcePaths": [
-      "/js/jquery-1.7.2.min.js",
-      "/js/bootstrap-scrollspy.js",
-      "/js/app.js"
-    ],
-    "destRoot": ".",
-    "destPath": "/js/compiled/all.js"
-  }
+    "app.js": {
+        "type": "javascript",
+        "fromBase": ".",
+        "fromSrc": [
+          "/js/jquery-1.7.2.min.js",
+          "/js/bootstrap-scrollspy.js",
+          "/js/app.js"
+        ],
+        "toBase": ".",
+        "toSrc": "/public/pps-api-docs-site/js/app.js"
+    }
 }
