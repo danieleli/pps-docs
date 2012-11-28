@@ -1,0 +1,86 @@
+.api-objects {
+    padding-top: 0;
+    margin-left: 70px;
+}
+
+.api-objects h1 {
+    margin-top: 0;
+}
+.method {
+    min-width: 70px;
+    display: inline-block;
+}
+
+.path {
+    min-width: 350px;
+    display: inline-block;
+}
+
+.comment {
+    display: inline-block;
+}
+
+.route {
+    white-space: nowrap;
+    display: block;
+}
+code .route .path span {
+    color: #fff;
+}
+
+.well {
+    
+}
+
+pre {
+    outline: 1px solid #ccc;
+    padding: 5px;
+    margin: 5px;
+}
+
+.string {
+    color: green;
+}
+
+.number {
+    color: darkorange;
+}
+
+.boolean {
+    color: blue;
+}
+
+.null {
+    color: magenta;
+}
+
+.key {
+    color: red;
+}
+.properties .name {
+    display: inline-block;
+    text-align: right;
+}
+.properties .description {
+    display: inline-block;
+    
+}
+
+.model .model-type { 
+    padding-bottom: 5px;
+    font-size: 135%;
+    cursor: pointer;
+}
+
+.model .model-type:hover{
+    color: #bbb;
+}
+
+.data-type {
+    display: inline-block;
+    padding: 0 5px;
+    color: #bbb;
+
+}
+
+.model .description { color: #bbb; padding: 0 5px;}

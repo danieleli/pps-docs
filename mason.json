@@ -17,7 +17,6 @@
         "toBase": ".",
         "toSrc": "/public/pps-api-docs-site/js/api_shortlist.js"
     },
-    
 
     "api_objects_knockout.js": {
         "type": "javascript",
@@ -28,6 +27,7 @@
         "toBase": ".",
         "toSrc": "/public/pps-api-docs-site/js/api_objects_knockout.js"
     },
+
 
     "developer.html": {
         "type": "jade",
@@ -46,7 +46,7 @@
           "/js/knockout-2.2.0.debug.js",
           "/js/underscore-ko-1.1.0.js",
           "/js/knockout.mapping-latest.debug.js",
-          "/js/bootstrap.min.js",
+          "/js/bootstrap.min.js"    ,
           "/js/app.js"
         ],
         "toBase": ".",
