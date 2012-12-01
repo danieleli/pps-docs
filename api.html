@@ -1,0 +1,302 @@
+﻿<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width">
+        <meta name="description" content="Priority Payment Systems offers extensive support to a nationwide network of ISOs and agents.">
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+        <link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico">
+        <title>
+            Priority Payment Systems ISO/Agent Programs, Merchant Accounts, Credit
+            Card Processing, Low Rates
+        </title>
+        <!-- script(src='http://www.google-analytics.com/ga.js', async='', type='text/javascript')-->
+        <script type="text/javascript" src="./t/scripts/jquery-1.8.2.js">
+        </script>
+        <link rel="stylesheet" href="./t/styles/bootstrap.min.css" type="text/css">
+        <link rel="stylesheet" href="./t/styles/site.css" type="text/css">
+        <link rel="stylesheet" href="./t/styles/api_objects.css" type="text/css">
+    </head>
+    <!-- [if gte IE 7]><body class="IE IE7"><![endif]-->
+    <!-- [if lte IE 6]><body class="IE IE6"><![endif]-->
+    <!-- [if !IE]>-->
+    
+    <body class="W3C">
+    <!--<![endif]-->
+    <div id="container">
+        <ul id="tabs">
+            <li style="cursor: pointer;">
+                <a href="/index.html">Merchants</a>
+            </li>
+            <li style="cursor: pointer;">
+                <a href="/agents.html">ISOs/Agents</a>
+            </li>
+            <li style="cursor: pointer;">
+                <a href="/strategic-partners.html">Strategic Partners</a>
+            </li>
+            <li style="cursor: pointer;" class="active">
+                <a href="/developers.html">Developers</a>
+            </li>
+        </ul>
+        <div id="gnav">
+            <a href="./index.html"><img id="logo" src="./t/images/logo.jpg" alt="Priority Payment Systems"></a>
+            <ul>
+                <li style="cursor: pointer;" >
+                    <a href="./index.html">Introduction</a>
+                </li>
+                
+                <li style="cursor: pointer;" >
+                    <a href="./developers.html">Developers</a>
+                </li>
+                <li style="cursor: pointer;" class="active">
+                    <a href="./api.html">API Objects</a>
+                </li>
+            </ul>
+            <div>
+                <a rel="external" href="https://mxmerchant.com/"><img src="./t/images/login.gif" alt="login" class="rollover"></a>
+            </div>
+        </div>
+        <div id="content">
+            <section id="main" role="application">
+                <div id="sidebar" class="nav">
+                    <ul data-bind="foreach: apiDeclarations">
+                        <li>
+                            <a data-bind="attr: { href: '#' + resourcePath }, text: resourcePath"></a>
+                            <ul data-bind="foreach: apis">
+                                <li>
+                                    <a data-bind="attr: { href: '#' + $parent.resourcePath + '_' + $data.operations[0].nickname }, text: $data.operations[0].nickname"></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="api-objects" data-bind="foreach: apiDeclarations">
+                    <div class="article" data-bind="attr: {id: resourcePath}">
+                        <h1 data-bind="text: resourcePath">
+                        </h1>
+                        <p data-bind="text: description">
+                        </p>
+                        <h2>
+                            Routes Overview
+                        </h2>
+                        <div class="well">
+                            <code>
+                                <!-- ko foreach: apis -->
+                                <span class="route">
+                                    <span class="method" data-bind="text: $data.operations[0].httpMethod, css: $data.operations[0].httpMethod">
+                                    </span>
+                                    <span class="path">
+                                        <span data-bind="text: $data.path">
+                                        </span>
+                                    </span>
+                                    <span class="comment">
+                                        \\
+                                        <span data-bind="text: description">
+                                        </span>
+                                    </span>
+                                </span>
+                                <!-- /ko -->
+                            </code>
+                        </div>
+                        <h2>
+                            Models
+                        </h2>
+                        <div class="well">
+                            <!-- ko foreach: models -->
+                            <div class="model" data-bind="attr: { id: $data.id }">
+                                <div class="model-type" data-bind="text: $data.id, attr: { 'data-target': ('#' + $data.id + '_properties') }"
+                                data-toggle="collapse">
+                                </div>
+                                <div class="properties collapse in" data-bind="attr: { id: $data.id + '_properties' }">
+                                    <!-- ko foreach: properties -->
+                                    <div style="white-space: nowrap;">
+                                        -
+                                        <span style="color: #bbb;">
+                                            (
+                                            <span class="type" data-bind="text: $data.value.type">
+                                            </span>
+                                            )
+                                        </span>
+                                        <span class="name" data-bind="text: $data.name">
+                                        </span>
+                                        :
+                                        <span class="description" data-bind="text: $data.value.description">
+                                        </span>
+                                    </div>
+                                    <!-- /ko -->
+                                </div>
+                            </div>
+                            <br />
+                            <!-- /ko -->
+                        </div>
+                        <br />
+                        <h2>
+                            Route Details
+                        </h2>
+                        <!-- ko foreach: apis -->
+                        <div data-bind="attr: { id: $parent.resourcePath + '_' + $data.operations[0].nickname }, text: $data.operations[0].nickname">
+                        </div>
+                        <div class="well">
+                            <code>
+                                <span class="route">
+                                    <span class="method" data-bind="text: $data.operations[0].httpMethod, css: $data.operations[0].httpMethod">
+                                    </span>
+                                    <span class="path">
+                                        <span data-bind="text: $data.path">
+                                        </span>
+                                    </span>
+                                </span>
+                            </code>
+                        </div>
+                        <div data-bind="text: $data.operations[0].notes">
+                        </div>
+                        <br />
+                        <!-- /ko -->
+                        <br />
+                        <br />
+                    </div>
+                    <hr style="margin: 50px 0; border-color: #666" />
+                </div>
+            </section>
+        </div>
+    </div>
+    <div id="foot">
+        <h5>
+            <span>
+                »
+            </span>
+            Extras
+        </h5>
+        <div>
+            <h6>
+                I want to:
+            </h6>
+            <p>
+                <a href="https://mxmerchant.com/">Access My Account</a>
+                <br>
+                <a href="/sign-up.html">Get More Info</a>
+                <br>
+                <a href="/find-a-reseller.html">Find a Reseller</a>
+                <br>
+                <a href="/agents.html">Become an Agent</a>
+                <br>
+                <a href="/sign-up.html">eNewsletter Sign Up</a>
+            </p>
+        </div>
+        <div>
+            <h6>
+                Plans/Products
+            </h6>
+            <p>
+                <a href="/products-pos.html">MX Point of Sale</a>
+                <br>
+                <a href="/mx-standard.html">MX Standard Plan</a>
+                <br>
+                <a href="/mx-classic.html">MX Classic Plan</a>
+                <br>
+                <a href="/mx-flex.html">MX Flex Plan</a>
+                <br>
+                <a href="/plans.html">Plan Comparison</a>
+            </p>
+        </div>
+        <div>
+            <h6>
+                Industry Solutions
+            </h6>
+            <p>
+                <a href="/ms-retail.html">Retail</a>
+                <br>
+                <a href="/ms-restaurant.html">Restaurant</a>
+                <br>
+                <a href="/ms-mobile.html">Mobile</a>
+                <br>
+                <a href="/ms-order.html">Internet</a>
+                <br>
+                <a href="/ms-b2b.html">Business to Business</a>
+            </p>
+        </div>
+        <div>
+            <h6>
+                Quicklinks
+            </h6>
+            <p>
+                <a href="https://mxmerchant.com/">Login</a>
+                <br>
+                <a href="/sign-up.html">Sign Up</a>
+                <br>
+                <a href="/sign-up.html">Contact</a>
+                <br>
+                <a href="/employment.html">Employment</a>
+                <br>
+                <a href="/sign-up.html">eNewsletter</a>
+            </p>
+        </div>
+        <div>
+            <p class="tag">
+                Next Generation Bank Card Solutions™
+            </p>
+            <p style="border-bottom: 1px solid #8c8c8c; padding-bottom: 7px;">
+                © Priority Payment Systems
+                <br>
+                <a href="/sitemap.html">Site Map</a>
+                -
+                <a href="/privacy.html">Privacy/Legal</a>
+                -
+                <a href="http://www.galaxybright.com" rel="external">Website Design: Galaxy Bright</a>
+            </p>
+            <p style="padding-top: 10px; word-spacing: 10px;">
+                <a href="http://www.facebook.com/pages/Alpharetta-GA/Priority-Payment-Systems/245476483303"
+                rel="external"><img src="./t/images/fb.gif" alt="Facebook"></a>
+                <a rel="external" href="https://twitter.com/PPSystems"><img src="./t/images/twitter.gif" alt="Twitter"></a>
+                <a href="http://www.linkedin.com/company/priority-payment-systems" rel="external"><img src="./t/images/in.gif" alt="Linkedin"></a>
+                <img src="./t/images/rss.gif" alt="RSS">
+                <img src="./t/images/sms.gif" alt="SMS">
+            </p>
+        </div>
+        <div id="footbot">
+            Priority Payment Systems is a registered ISO/MSP of Wells Fargo Bank NA,
+            Walnut Creek, CA.
+            <br>
+            <br>
+            <b>
+                "MX"
+            </b>
+            is a trademark and service mark of Priority Payment Systems LLC, which
+            disclaims any affiliation, sponsorship or endorsement of any kind with
+            any other entity using
+            <b>
+                MX
+            </b>
+            or any variation thereof in connection with bank card, credit card, or
+            transaction technology, processing services and merchant services.
+        </div>
+    </div>
+    <script src="./t/scripts/api_shortlist.js" type="text/javascript">
+    </script>
+    <script type="text/javascript" src="./t/scripts/bootstrap.min.js">
+    </script>
+    <script type="text/javascript" src="./t/scripts/app.js">
+    </script>
+    <script type="text/javascript" src="./t/scripts/home.js">
+    </script>
+    <script type="text/javascript" src="./t/scripts/underscore.js">
+    </script>
+    <script type="text/javascript" src="./t/scripts/knockout-2.2.0.debug.js">
+    </script>
+    <script type="text/javascript" src="./t/scripts/underscore-ko-1.1.0.js">
+    </script>
+    <script type="text/javascript" src="./t/scripts/knockout.mapping-latest.debug.js">
+    </script>
+    <script type="text/javascript" src="./t/scripts/api.js">
+    </script>
+    <script src="./t/scripts/api_objects_knockout.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+    $(function() {
+    window.loadKnockout();
+});
+    </script>
+    </body>
+
+</html>

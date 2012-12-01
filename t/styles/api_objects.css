@@ -1,10 +1,12 @@
 .api-objects {
     padding-top: 0;
     margin-left: 70px;
+    margin-top: -2.5em;
+
 }
 
 .api-objects h1 {
-    margin-top: 0;
+ 
 }
 .method {
     min-width: 70px;
@@ -28,9 +30,6 @@ code .route .path span {
     color: #fff;
 }
 
-.well {
-    
-}
 
 pre {
     outline: 1px solid #ccc;

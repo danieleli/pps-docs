@@ -1,0 +1,484 @@
+@import url("http://fonts.googleapis.com/css?family=Lato:400,900");
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+body {
+  line-height: 1;
+  color: #000;
+  background: #fff;
+}
+ol,
+ul {
+  list-style: none;
+}
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  vertical-align: middle;
+}
+caption,
+th,
+td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+a img {
+  border: none;
+}
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  display: block;
+}
+audio,
+canvas,
+video {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+audio:not([controls]),
+[hidden] {
+  display: none;
+}
+/* Variables */
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+html {
+  background: #282224 url("/images/bg_texture.png") repeat;
+}
+body {
+  background: transparent;
+
+  color: #d0d0d0;
+  margin: 0 auto;
+  font: 1em/1.3125em Helvetica, Arial, sans-serif;
+}
+a:link,
+a:active,
+a:visited {
+  color: #ffeb01;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.nav a:link,
+.nav a:active,
+.nav a:visited {
+  color: #fff;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  color: #d2d2d2;
+  line-height: 1.3125em;
+}
+h1,
+.h1 {
+  font-weight: 900;
+  font-size: 4.25em;
+  color: #fff;
+  margin: 0.6666em 0;
+}
+h2,
+.h2 {
+  font-size: 2.625em;
+  margin: 1em 0;
+}
+h3,
+.h3 {
+  font-size: 1.625em;
+  color: #afb092;
+  margin: 1.385em 0;
+}
+pre,
+.url {
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+  background: #2c2c2c;
+  -webkit-border-radius: 0.5em;
+  border-radius: 0.5em;
+  padding: 0.5em;
+  margin: 1em 0;
+}
+article pre {
+  overflow-x: auto;
+}
+article pre ol.line-numbers {
+  counter-reset: li;
+  margin: 0;
+}
+article pre ol.line-numbers li {
+  position: relative;
+  list-style-type: none;
+  margin: 0 0 0 2em;
+}
+article pre ol.line-numbers li:before {
+  content: counter(li);
+  counter-increment: li;
+  position: absolute;
+  top: 0;
+  left: -2.5em;
+  width: 2em;
+  background: rgba(0,0,0,0.3);
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 0.25em;
+  text-align: right;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+article pre ol.line-numbers li:first-child:before {
+  border-top-left-radius: 0.25em;
+  border-top-right-radius: 0.25em;
+}
+article pre ol.line-numbers li:last-child:before {
+  border-bottom-left-radius: 0.25em;
+  border-bottom-right-radius: 0.25em;
+}
+article pre .method ol.line-numbers li:before {
+  display: none;
+}
+article pre code .comment {
+  color: #839496;
+}
+article pre code .init {
+  color: #ffeb01;
+}
+article pre code .string {
+  color: #5a8dfa;
+}
+article pre code .string span {
+  color: #5a8dfa;
+}
+article pre code .keyword {
+  color: #d61103;
+}
+article pre code .number {
+  color: #009282;
+}
+article pre code .placeholder {
+  color: #888;
+}
+article pre code .method.GET {
+  color: #009282;
+}
+article pre code .method.POST {
+  color: #5a8dfa;
+}
+article pre code .method.PUT {
+  color: #ffeb01;
+}
+article pre code .method.DELETE {
+  color: #cb4b16;
+}
+dl {
+  padding-left: 5px;
+}
+dl dt {
+  font-weight: bold;
+}
+dl dd {
+  padding-left: 15px;
+  padding-bottom: 5px;
+  font-style: italic;
+}
+.url .method {
+  display: inline-block;
+  padding: 0.25em;
+}
+#header {
+  padding: 2em 0;
+}
+#header h1 {
+  display: inline-block;
+  margin: 0;
+  width: 300px;
+  height: 92px;
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  background: url("/images/logo_white.png") left top no-repeat;
+}
+#header #navigation {
+  display: inline-block;
+  vertical-align: bottom;
+  margin: 0 0 0 2em;
+}
+#header #navigation ul {
+  display: inline-block;
+  float: right;
+}
+#header #navigation ul li {
+  display: inline-block;
+  margin: 0 1em;
+}
+#main {
+  padding: 2.5em 0;
+  padding-left: 25%;
+  position: relative;
+}
+#main .no-sidebar {
+  margin-left: -33%;
+}
+#main #presentation {
+  padding: 16px;
+  height: 22em;
+  background: rgba(255,255,255,0.2);
+  margin-bottom: 16px;
+}
+#main #presentation .welcome-video {
+  display: inline-block;
+  float: left;
+  width: 50%;
+  height: 100% !important;
+  background: #000;
+}
+#main #presentation .welcome-message {
+  display: inline-block;
+  float: right;
+  padding: 0 16px;
+  width: 50%;
+  height: 100% !important;
+}
+#main #presentation .welcome-message h2,
+#main #presentation .welcome-message p {
+  margin: 0 0 16px 0;
+  color: #fff;
+}
+#main #presentation .welcome-message h2 {
+  font-weight: bold;
+}
+#main #presentation .welcome-message p {
+  font-weight: normal;
+}
+#main #presentation .welcome-message .white-button {
+  display: block;
+  padding: 0.5em;
+  width: 12em;
+  font-size: 0.75em;
+  text-align: center;
+  color: #000;
+  background: #fff;
+  -webkit-box-shadow: 4px 4px 0px 0px #000;
+  box-shadow: 4px 4px 0px 0px #000;
+}
+#main #core-features .feature-list > li {
+  display: inline-block;
+  padding: 16px;
+  float: left;
+  width: 33.3333%;
+}
+#main #core-features .feature-list > li article .feature-image {
+  height: 256px;
+  background: #d0d0d0;
+}
+#main #core-features .feature-list > li article h3,
+#main #core-features .feature-list > li article p {
+  margin: 16px 0;
+}
+#main #core-features .feature-list > li:first-child {
+  padding-left: 0;
+}
+#main #core-features .feature-list > li:last-child {
+  padding-right: 0;
+}
+#main #sidebar {
+  position: absolute;
+  left: 0;
+  top: 2.5em;
+  width: 20%;
+}
+#main #sidebar.fixed {
+  position: fixed;
+  top: 16px;
+  left: 10%;
+  width: 16%;
+}
+#main #sidebar > ul > li {
+  margin-bottom: 1em;
+}
+#main #sidebar > ul > li > a {
+  display: block;
+  padding: 0.25em;
+  margin-bottom: 0.5em;
+}
+#main #sidebar > ul > li.active > a {
+  background: #ffeb01;
+  color: #282224;
+}
+#main #sidebar > ul > li > ul {
+  padding-left: 1em;
+}
+#main #sidebar > ul > li > ul > li > a {
+  position: relative;
+}
+#main #sidebar > ul > li > ul > li > a:after {
+  content: '>';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: -20px;
+  opacity: 0;
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  filter: alpha(opacity=0);
+  -webkit-transition-property: left, opacity;
+  -moz-transition-property: left, opacity;
+  -o-transition-property: left, opacity;
+  -ms-transition-property: left, opacity;
+  transition-property: left, opacity;
+  -webkit-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  -ms-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+  -webkit-transition-timing-function: ease-in-out;
+  -moz-transition-timing-function: ease-in-out;
+  -o-transition-timing-function: ease-in-out;
+  -ms-transition-timing-function: ease-in-out;
+  transition-timing-function: ease-in-out;
+}
+#main #sidebar > ul > li > ul > li.active > a:after {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  left: -16px;
+}
+#footer {
+  clear: both;
+  padding: 16px 0;
+  border-top: 1px solid #ffeb01;
+}
+#footer #footer-nav ul {
+  clear: both;
+}
+#footer #footer-nav ul li {
+  display: inline-block;
+  float: left;
+  padding: 8px;
+}
+#footer #footer-nav ul li:first-child {
+  padding-left: 0;
+}
+#footer #footer-nav ul li a {
+  font-size: 0.75em;
+}
+#footer #footer-nav p.copyrite {
+  padding: 8px 0;
+  display: inline-block;
+  float: right;
+  font-size: 0.75em;
+}
+article p,
+article ul,
+article ol {
+  margin-bottom: 1em;
+}
+article ul,
+article ol {
+  margin-left: 20px;
+}
+article ul li,
+article ol li {
+  margin-bottom: 0.25em;
+}
+article ul li {
+  list-style-type: disc;
+}
+article ol li {
+  list-style-type: decimal;
+}
